@@ -10,11 +10,9 @@ const UserSchema = new mongoose.Schema({
     },
     avatarUrl:{
         type:String,
-        required:"avatarUrl is required"
     },
     backgroundUrl:{
         type:String,
-        required:"backgroundUrl is required"
     },
     quoteMessage:{
         type:String,

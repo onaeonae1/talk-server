@@ -15,6 +15,10 @@ const RoomSchema = new mongoose.Schema({
     roomName:{
         type:String,
         required:"Room name is required"
+    },
+    creator:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
     }
 })
 const model = mongoose.model("Room", RoomSchema);
