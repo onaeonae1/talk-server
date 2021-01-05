@@ -7,6 +7,7 @@ import Chat from "../models/Chat";
 
 export const createDummyuser = async (req,res)=>{
     console.log("Creating Dummy User with data below..");
+    console.log(req.body);
     try{
         const{
             body:{
