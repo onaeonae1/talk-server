@@ -12,12 +12,14 @@ export const createDummyuser = async (req,res)=>{
     try{
         const{
             body:{
-                userName, email, 
+                userName, email, nickName, quoteMessage
             }
         } = req;
         const dummyUser = await User.create({
             userName:userName,
-            email:email
+            email:email,
+            nickName:nickName,
+            quoteMessage:quoteMessage
         });
         res.send(dummyUser);
     }
@@ -87,8 +89,10 @@ export const dummyPostUser = async (req,res)=>{
             method:'POST',
             url:"http://192.168.35.62:4000/dummy/user",
             data:{
-                userName:"oaneonae3",
-                email:"onaeonae3@konkuk.ac.kr"
+                userName:"oaneonae5",
+                email:"onaeonae5@konkuk.ac.kr",
+                nickName:"idiot",
+                quoteMessage:"i'm idiot"
             }
         });
         console.log("post user finished");
@@ -135,5 +139,4 @@ export const dummyPostChat = async(req,res)=>{
     catch(error){
         console.log(error);
     }
-
 }

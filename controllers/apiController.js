@@ -46,16 +46,56 @@ export const getChats = async(req,res) =>{
 };
 
 export const addFriend = async (req,res)=>{
-    //내가 누군가를 친구로 추가
     console.log("Add Friend");
-    const {
-        body:{user_id, friend_id},
-    } = req;
-    const targetUser = await User.findById(user_id);
-    targetUser.friendsList.push(friend_id);
-    targetUser.save();
-    console.log(targetUser);
+    try{
+        const {
+            body:{user_id, friend_id},
+        } = req;
+        console.log(user_id);
+        console.log(friend_id);
+        const alpha = await User.find({});
+        console.log(alpha);
+        const targetUser = await User.findOne({_id:user_id});
+        console.log(targetUser);
+        targetUser.friendsList.push(friend_id);
+        targetUser.save();
+        console.log("Successfully Added Friend");
+        res.redirect("/api/users");
+    }
+    catch(error){
+        console.log(error);
+        res.send({
+            statusCode:400,
+            message:"Failed to Add Friend"
+        });
+    }
+};
+export const changeProfile = async (req,res)=>{
+    console.log("Change Profile");
+    try{
+        const{
+            body:{user_id, avatarUrl, backgroundUrl, nickName, quoteMessage}
+        } = req;
+        const targetUser = await User.findById(user_id);
+        targetUser.avatarUrl = avatarUrl;
+        targetUser.backgroundUrl = backgroundUrl;
+        targetUser.nickName = nickName;
+        targetUser.quoteMessage = quoteMessage;
+        targetUser.save();
+        console.log("Successfully Changed Profile");
+        console.log(targetUser);
+
+    }
+    catch(error){
+        res.send({
+            statuscode:400,
+            message:"Failed to Change Profile"
+        })
+    }
+};
+export const createRoom = async (req,res)=>{
+    //채팅방 개설.
 };
 export const invite = async(req,res)=>{ 
-    //친구를 초대
+    //채팅방에 친구를 초대
 }

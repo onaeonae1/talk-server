@@ -8,7 +8,7 @@ apiRouter.get("/rooms", getRooms);
 apiRouter.get("/chats",getChats);
 apiRouter.post("/addFriend", addFriend);
 
-
+//dummy test
 apiRouter.get("/testuser", dummyPostUser);
 apiRouter.get("/testroom", dummyPostRoom);
 apiRouter.get("/testchat", dummyPostChat);

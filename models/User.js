@@ -4,6 +4,12 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required:"String is required"
     },
+    nickName:{
+        type:String,
+    },
+    birthDay:{
+        type:Date
+    },
     email:{
         type:String,
         required:"Email is Required"
