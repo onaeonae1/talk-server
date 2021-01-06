@@ -18,7 +18,8 @@ const RoomSchema = new mongoose.Schema({
     },
     creator:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
+        ref:"User",
+        required:"Creator is Required"
     }
 })
 const model = mongoose.model("Room", RoomSchema);

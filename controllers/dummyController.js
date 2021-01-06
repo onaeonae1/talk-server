@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import axios from "axios";
 
 import User from "../models/User";
 import Room from "../models/Room";
@@ -78,3 +79,61 @@ export const createDummychat = async(req,res)=>{
         });
     }
 };
+
+export const dummyPostUser = async (req,res)=>{
+    console.log("dummy fetch test");
+    try{
+        await axios({
+            method:'POST',
+            url:"http://192.168.35.62:4000/dummy/user",
+            data:{
+                userName:"oaneonae3",
+                email:"onaeonae3@konkuk.ac.kr"
+            }
+        });
+        console.log("post user finished");
+        res.redirect("/api/users");
+    }
+    catch(error){
+        console.log(error);
+    }
+};
+export const dummyPostRoom = async(req,res)=>{
+    console.log("dummy fetch room");
+    try{
+        await axios({
+            method:'POST',
+            url:"http://192.168.35.62:4000/dummy/room",
+            data:{
+                roomName:"nodejs를 혐오하는 사람의 모임",
+                creator: "5ff580df1feb980df879a8e7",
+                userList:["5ff580df1feb980df879a8e7", ],
+            }
+        });
+        console.log("post room finished");
+        res.redirect("/api/rooms");
+    }
+    catch(error){
+        console.log(error);
+    }
+};
+export const dummyPostChat = async(req,res)=>{
+    console.log("dummy fetch chat");
+    try{
+        await axios({
+            method:'POST',
+            url:"http://192.168.35.62:4000/dummy/chat",
+            data:{
+                message:"nodejs 정말 극혐이네요",
+                speaker:"5ff580df1feb980df879a8e7",
+                joiningRoom:"5ff586d7f044792e88e7985a",
+            }
+        });
+        console.log("post chat finished");
+        res.redirect("/api/chats");
+    }
+    catch(error){
+        console.log(error);
+    }
+
+}
