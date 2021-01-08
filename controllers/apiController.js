@@ -7,7 +7,7 @@ export const getUser = async (req, res) => {
 
   const userId = req.query.id;
   try {
-    const user = await User.findOne({ _id: userId });
+    const user = await User.findOne({ _id: userId }).populate("friendsList");
     res.send(user);
   } catch (error) {
     res.send({
