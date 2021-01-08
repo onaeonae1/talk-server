@@ -53,25 +53,32 @@ export const getChats = async (req, res) => {
       message: "Internal Server Error",
     });
   }
-};
 
-export const addFriend = async (req, res) => {
-  console.log("Add Friend");
-  try {
-    const {
-      body: { userId, friendId },
-    } = req;
-    const targetUser = await User.findOne({ _id: userId });
-    targetUser.friendsList.push(friendId);
-    targetUser.save();
-    res.redirect("/api/users");
-  } catch (error) {
-    console.log(error);
-    res.send({
-      statusCode: 400,
-      message: "Failed to Add Friend",
-    });
-  }
+export const addFriend = async (req,res)=>{
+    console.log("Add Friend");
+    try{
+        const {
+            body:{userId, friendId},
+        } = req;
+        const targetUser = await User.findOne({_id:userId});
+        if(targetUser.friendsList.includes(friendId)){
+            const E = new Error('They Are Already Friend');
+            E.name = "alreadyFriend";
+            console.log("They Are Already Friend");
+            throw E;
+        }
+        else{
+            targetUser.friendsList.push(friendId);
+            targetUser.save();
+            res.redirect("/api/users");
+        }
+    }
+    catch(error){
+        res.send({
+            name:error.name,
+            message:error.message
+        });
+    }
 };
 export const changeProfile = async (req, res) => {
   console.log("Change Profile");
