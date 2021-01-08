@@ -49,10 +49,10 @@ export const addFriend = async (req,res)=>{
     console.log("Add Friend");
     try{
         const {
-            body:{user_id, friend_id},
+            body:{userId, friendId},
         } = req;
-        const targetUser = await User.findOne({_id:user_id});
-        targetUser.friendsList.push(friend_id);
+        const targetUser = await User.findOne({_id:userId});
+        targetUser.friendsList.push(friendId);
         targetUser.save();
         res.redirect("/api/users");
     }
@@ -68,9 +68,9 @@ export const changeProfile = async (req,res)=>{
     console.log("Change Profile");
     try{
         const{
-            body:{user_id, avatarUrl, backgroundUrl, nickName, quoteMessage}
+            body:{userId, avatarUrl, backgroundUrl, nickName, quoteMessage}
         } = req;
-        const targetUser = await User.findById(user_id);
+        const targetUser = await User.findById(userId);
         targetUser.avatarUrl = avatarUrl;
         targetUser.backgroundUrl = backgroundUrl;
         targetUser.nickName = nickName;
@@ -88,8 +88,30 @@ export const changeProfile = async (req,res)=>{
     }
 };
 export const createRoom = async (req,res)=>{
-    //채팅방 개설.
+    console.log("Making Room"); //어떤 User가 채팅방을 만든다
+
 };
 export const invite = async(req,res)=>{ 
     //채팅방에 친구를 초대
-}
+    console.log("Invite User");
+    try{
+        const{
+            body:roomId, hostId, guestId
+        } = req;
+        const targetRoom = await Room.findById(roomId);
+        const targetGuest = await User.findById(guestId);
+        const targetHost = await User.findById(hostId);
+        console.log(targetRoom.roomName);
+        console.log(targetGuest.nickName);
+        console.log(targetHost.nickName);
+        targetRoom.userList.push(targetGuest._id);
+        targetRoom.save();
+
+    }
+    catch(error){
+        res.send({
+            statusCode:400,
+            message:"Failed to Invite User to Room"
+        })
+    }
+};
