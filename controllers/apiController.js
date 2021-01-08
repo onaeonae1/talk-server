@@ -51,15 +51,9 @@ export const addFriend = async (req,res)=>{
         const {
             body:{user_id, friend_id},
         } = req;
-        console.log(user_id);
-        console.log(friend_id);
-        const alpha = await User.find({});
-        console.log(alpha);
         const targetUser = await User.findOne({_id:user_id});
-        console.log(targetUser);
         targetUser.friendsList.push(friend_id);
         targetUser.save();
-        console.log("Successfully Added Friend");
         res.redirect("/api/users");
     }
     catch(error){
