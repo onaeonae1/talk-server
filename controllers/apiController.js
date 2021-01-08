@@ -52,15 +52,23 @@ export const addFriend = async (req,res)=>{
             body:{userId, friendId},
         } = req;
         const targetUser = await User.findOne({_id:userId});
-        targetUser.friendsList.push(friendId);
-        targetUser.save();
-        res.redirect("/api/users");
+        if(targetUser.friendsList.includes(friendId)){
+            const E = new Error('They Are Already Friend');
+            E.name = "alreadyFriend";
+            console.log("They Are Already Friend");
+            throw E;
+            //throw Error("Already Friend");
+        }
+        else{
+            targetUser.friendsList.push(friendId);
+            targetUser.save();
+            res.redirect("/api/users");
+        }
     }
     catch(error){
-        console.log(error);
         res.send({
-            statusCode:400,
-            message:"Failed to Add Friend"
+            name:error.name,
+            message:error.message
         });
     }
 };
@@ -106,7 +114,6 @@ export const invite = async(req,res)=>{
         console.log(targetHost.nickName);
         targetRoom.userList.push(targetGuest._id);
         targetRoom.save();
-
     }
     catch(error){
         res.send({

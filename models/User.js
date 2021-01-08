@@ -50,8 +50,6 @@ const UserSchema = new mongoose.Schema({
 //Schema Hook 추가
 UserSchema.pre("save", function(next){
     console.log("pre save Hook Activated");
-    const currentUser = this;
-    console.log(currentUser);
     next();
 });
 const model = mongoose.model("User", UserSchema);
