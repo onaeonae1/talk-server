@@ -1,24 +1,39 @@
 import express from "express";
 import {
-  addFriend,
-  getChats,
-  getUser,
   getUsers,
   getRooms,
+  getChats,
 } from "../controllers/apiController";
 import {
   dummyPostChat,
   dummyPostRoom,
   dummyPostUser,
 } from "../controllers/dummyController";
+
+import {
+  getUser,
+  addFriend,
+  removeFriend,
+  blockUser
+} from "../controllers/userController";
 const apiRouter = express.Router();
 
-apiRouter.get("/getUser", getUser);
+//Total Data
 apiRouter.get("/getUsers", getUsers);
-apiRouter.post("/addFriend", addFriend);
+apiRouter.get("/getRooms", getRooms);
+apiRouter.get("/getChats", getChats); 
 
 //dummy test
 apiRouter.get("/testuser", dummyPostUser);
 apiRouter.get("/testroom", dummyPostRoom);
 apiRouter.get("/testchat", dummyPostChat);
+
+//Implemented Functions
+apiRouter.get("/getUser", getUser); 
+apiRouter.post("/addFriend", addFriend);
+apiRouter.post("/removeFriend", removeFriend);
+apiRouter.post("/blockUser", blockUser);
+
+
+
 export default apiRouter;

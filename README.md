@@ -1,5 +1,14 @@
 # Talk - Server
 
-## TODO
-- DB에 값 추가할 때 중복 제거(includes)
-    - 방에 초대할 때 이미 있는 사람인지 확인
+## DONE
+- Remove Friend : 친구 삭제
+- Block User : 차단
+- userController, roomController 분리
+
+## Things to Implement
+- APIs in Notion Document
+
+## Things to Apply for Project
+- Error Handling
+- Using Jest
+- Using Mongoose Hook -> to check references

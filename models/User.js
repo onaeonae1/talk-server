@@ -44,6 +44,12 @@ const UserSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"Room"
         }
+    ],
+    blockList:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User"
+        }
     ]
 });
 

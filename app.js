@@ -16,6 +16,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 //custom Ruters
+app.get("/", (req,res)=>{
+    res.send({
+        title:"Node API Main Page",
+        description:"go to /api/getUsers"
+    })
+});
 app.use("/dummy", dummyRouter);
 app.use("/api", apiRouter);
 
