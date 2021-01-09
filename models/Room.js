@@ -21,6 +21,10 @@ const RoomSchema = new mongoose.Schema({
     ref: "User",
     required: "Creator is Required",
   },
+  recentChat: {
+    type: String,
+    default: "",
+  },
 });
 const model = mongoose.model("Room", RoomSchema);
 export default model;
