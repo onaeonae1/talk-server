@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import apiRouter from "./routers/apiRouter";
 import dummyRouter from "./routers/dummyRouter";
+import roomRouter from "./routers/roomRouter";
 import {localsMiddleware} from "./middlewares";
 import routes from "./routes";
 //app 기본 설정
@@ -27,5 +28,6 @@ app.get("/", (req,res)=>{
 });
 app.use(routes.dummy, dummyRouter);
 app.use(routes.api, apiRouter);
+app.use(routes.room, roomRouter);
 
 export default app;

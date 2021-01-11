@@ -6,7 +6,9 @@ import path from "path";
 dotenv.config();
 
 const PORT = process.env.PORT;
+const SOCKET_PORT = process.env.SOCKET_PORT;
 const handleListening = () => {
-  console.log(`Server Listening on https://localhost:${PORT}`);
+  console.log(`API Server : http://localhost:${PORT}`);
+  console.log(`Socket Server : http://localhost:${SOCKET_PORT}`);
 };
 app.listen(PORT, handleListening);

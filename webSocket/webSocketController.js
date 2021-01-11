@@ -1,4 +1,7 @@
 import { globalData } from "../globalData";
+import User from "../models/User";
+import Room from "../models/Room";
+import Chat from "../models/Chat";
 
 export const authenticate = (data, client) => {
   const { authKey, userId } = data;
@@ -17,7 +20,7 @@ export const authenticate = (data, client) => {
 export const requestRoomChat = (data, client) => {
   const { roomId, from, amount } = data;
   // DB에서 해당 Room에 접속, 요청한 메시지부터 amount개의 메시지를 수신하여
-  // client에게로 보내줌
+  // client에게로 보내줌e.log("Socket Error");
   client.send({
     type: "getRoomChat",
     data: {
@@ -27,9 +30,6 @@ export const requestRoomChat = (data, client) => {
     },
   });
 };
-
-export const
-
 export const quitServer = (data, client) => {
   const { userId } = data;
   globalData.connectingUser[userId] = undefined;

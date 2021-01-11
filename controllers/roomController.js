@@ -35,9 +35,6 @@ export const invite = async (req, res) => {
     const targetRoom = await Room.findById(roomId);
     const targetGuest = await User.findById(guestId);
     const targetHost = await User.findById(hostId);
-    console.log(targetRoom.roomName);
-    console.log(targetGuest.nickName);
-    console.log(targetHost.nickName);
     targetRoom.userList.push(targetGuest._id);
     targetRoom.save();
   } catch (error) {
@@ -45,5 +42,26 @@ export const invite = async (req, res) => {
       statusCode: 400,
       message: "Failed to Invite User to Room",
     });
+  }
+};
+export const exitRoom = async (req, res) => {
+
+};
+export const getRoomChat = async (req,res) =>{
+  console.log("get Room Chat");
+  try{
+    const {
+      query:{roomId, from, amount}
+    } = req;
+    const targetRoom = await Room.findOne({_id:roomId});
+    console.log(targetRoom);
+    const chatList = targetRoom.chatList;
+    const fromIndex = chatList.indexOf(from);
+    const start = fromIndex+1-amount<0 ? 0 : fromIndex+1-amount;
+    const slicedArr = chatList.slice(start, fromIndex);
+    res.send(slicedArr);
+  }
+  catch(error){
+    res.send(error);
   }
 };

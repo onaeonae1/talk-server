@@ -81,7 +81,6 @@ export const createDummychat = async(req,res)=>{
         });
     }
 };
-
 export const dummyPostUser = async (req,res)=>{
     console.log("dummy fetch test");
     try{
@@ -121,7 +120,7 @@ export const dummyPostRoom = async(req,res)=>{
         console.log(error);
     }
 };
-export const dummyPostChat = async(req,res)=>{
+export const dummyPostChat = async (req, res) => {
     console.log("dummy fetch chat");
     try{
         await axios({
@@ -138,5 +137,23 @@ export const dummyPostChat = async(req,res)=>{
     }
     catch(error){
         console.log(error);
+    }
+};
+export const dummySearch = async (req,res) =>{
+    console.log("dummy Search Test");
+    try{
+        const{
+            body:{userId, friendId, amount}
+        } = req;
+        const targetUser = await User.findOne({_id:userId});
+        const friendsList = targetUser.friendsList;
+        const friendIndex = targetUser.friendsList.indexOf(friendId);
+
+        const start = friendIndex+1-amount<0 ? 0 : friendIndex+1-amount ;
+        const slicedArr = friendsList.slice(start, friendIndex+1);
+        res.send(slicedArr);
+    }
+    catch(error){
+        console.log("dummy search error");
     }
 }
