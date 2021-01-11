@@ -1,4 +1,7 @@
 import { globalData } from "../globalData";
+import Room from "../models/Room";
+import Chat from "../models/Chat";
+import User from "../models/User";
 
 export const authenticate = (data, client) => {
   const { authKey, userId } = data;
@@ -14,21 +17,32 @@ export const authenticate = (data, client) => {
   globalData.verifiedLogin[userId] = client;
 };
 
-export const requestRoomChat = (data, client) => {
-  const { roomId, from, amount } = data;
-  // DB에서 해당 Room에 접속, 요청한 메시지부터 amount개의 메시지를 수신하여
-  // client에게로 보내줌
-  client.send({
-    type: "getRoomChat",
+export const sendRealTimeChat = async (data) => {
+  const { roomId, userId, chat } = data;
+
+  const room = await Room.findById(roomId);
+  const newChat = await Chat.create({
+    message: chat,
+    speaker: userId,
+    joiningRoom: roomId,
+  });
+  room.chatList.push(newChat);
+  room.save();
+
+  const sendObject = {
+    type: "getRealTimeChat",
     data: {
+      chat,
       roomId,
-      chatList: [],
-      isEnd: true,
     },
+  };
+  room.userList.forEach((item) => {
+    const target = globalData.connectingUser[item._id];
+    if (target) {
+      target.send(JSON.stringify(sendObject));
+    }
   });
 };
-
-export const
 
 export const quitServer = (data, client) => {
   const { userId } = data;
