@@ -1,13 +1,14 @@
 import express from "express";
-import path from "path";
 import cookieParser from "cookie-parser";
-import apiRouter from "./routers/apiRouter";
-import io from "socket.io";
-import dummyRouter from "./routers/dummyRouter";
 import cors from "cors";
+import apiRouter from "./routers/apiRouter";
+import dummyRouter from "./routers/dummyRouter";
+import {localsMiddleware} from "./middlewares";
+import routes from "./routes";
 //app 기본 설정
 const app = express();
 
+//cors
 app.use(cors());
 
 //body-parser
@@ -15,6 +16,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+//localsMiddleware
+app.use(localsMiddleware);
 //custom Ruters
 app.get("/", (req,res)=>{
     res.send({
@@ -22,7 +25,7 @@ app.get("/", (req,res)=>{
         description:"go to /api/getUsers"
     })
 });
-app.use("/dummy", dummyRouter);
-app.use("/api", apiRouter);
+app.use(routes.dummy, dummyRouter);
+app.use(routes.api, apiRouter);
 
 export default app;
