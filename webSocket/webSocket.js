@@ -13,6 +13,6 @@ ws.on("connection", (client) => {
   });
 
   client.on("close", (code, reason) => {
-    console.log(code, reason);
+    console.log("Websocket closed!!!" + code);
   });
 });

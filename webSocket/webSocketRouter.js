@@ -1,4 +1,8 @@
-import { authenticate, quitServer } from "./webSocketController";
+import {
+  authenticate,
+  quitServer,
+  sendRealTimeChat,
+} from "./webSocketController";
 
 export const webSocketRouter = (messageObject, client) => {
   const { type, data } = messageObject;
@@ -7,12 +11,13 @@ export const webSocketRouter = (messageObject, client) => {
     case "authenticate":
       authenticate(data, client);
       break;
-    case "requestRoomChat":
+    case "sendRealTimeChat":
+      sendRealTimeChat(data);
       break;
     case "quitServer":
       quitServer(data, client);
     default:
-      console.log("Error Wrong message:" + data);
+      console.log("Error Wrong message:" + JSON.stringify(messageObject));
       break;
   }
 };
