@@ -43,10 +43,6 @@ export const sendRealTimeChat = async (data) => {
     }
   });
 };
-<<<<<<< HEAD
-=======
-
->>>>>>> 57120b9ecaab7c5b989074fc9bf93952e4b745d6
 export const quitServer = (data, client) => {
   const { userId } = data;
   globalData.connectingUser[userId] = undefined;
