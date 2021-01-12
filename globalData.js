@@ -1,8 +1,9 @@
+/* eslint-disable import/prefer-default-export */
 export const globalData = (() => {
-  let verifiedLogin = new Map();
+  const verifiedLogin = new Map();
   // verifiedLogin[code] = userId;
 
-  let connectingUser = new Map();
+  const connectingUser = new Map();
   // connectingUser[userId] = socketClient;
 
   return { verifiedLogin, connectingUser };

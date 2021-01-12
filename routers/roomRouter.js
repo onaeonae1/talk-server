@@ -1,6 +1,9 @@
-import express from "express";
-import routes from "../routes";
-import { createRoom, exitRoom, getRoomChat, invite } from "../controllers/roomController";
+import express from 'express';
+import routes from '../routes';
+import {
+  createRoom, exitRoom, getRoomChat, invite,
+} from '../controllers/roomController';
+
 const roomRouter = express.Router();
 
 roomRouter.post(routes.createRoom, createRoom);

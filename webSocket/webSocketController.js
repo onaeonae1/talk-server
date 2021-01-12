@@ -1,10 +1,9 @@
-import { globalData } from "../globalData";
-import User from "../models/User";
-import Room from "../models/Room";
-import Chat from "../models/Chat";
+import { globalData } from '../globalData';
+import Chat from '../models/Chat';
+import Room from '../models/Room';
 
 export const authenticate = (data, client) => {
-  const { authKey, userId } = data;
+  const { userId } = data;
   // const verifiedUserId = globalData.verifiedLogin[authKey];
   // if (verifiedUserId) {
   //   globalData.connectingUser[verifiedUserId] = client;
@@ -30,7 +29,7 @@ export const sendRealTimeChat = async (data) => {
   room.save();
 
   const sendObject = {
-    type: "getRealTimeChat",
+    type: 'getRealTimeChat',
     data: {
       chat,
       roomId,
@@ -43,7 +42,7 @@ export const sendRealTimeChat = async (data) => {
     }
   });
 };
-export const quitServer = (data, client) => {
+export const quitServer = (data) => {
   const { userId } = data;
   globalData.connectingUser[userId] = undefined;
 };

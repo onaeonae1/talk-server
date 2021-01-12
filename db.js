@@ -1,21 +1,22 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
 dotenv.config();
-const mongo_url = process.env.MONGO_PROD_URL;
-console.log(`Try to Connect : ${mongo_url}`);
+const mongoUrl = process.env.MONGO_PROD_URL;
+console.log(`Try to Connect : ${mongoUrl}`);
 mongoose.connect(
-    mongo_url,
-    {
-        useNewUrlParser:true,
-        useFindAndModify:false,
-        useUnifiedTopology:true
-    }
+  mongoUrl,
+  {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  },
 );
 const db = mongoose.connection;
 
-db.once("open", ()=>{
-    console.log('DB Connected : API Server');
+db.once('open', () => {
+  console.log('DB Connected : API Server');
 });
-db.on("error", ()=>{
-    console.log(`error on db connection ${error}`);
+db.on('error', (error) => {
+  console.log(`error on db connection ${error}`);
 });
