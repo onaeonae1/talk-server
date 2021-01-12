@@ -66,12 +66,20 @@ export const createDummychat = async(req,res)=>{
                 message, speaker, joiningRoom
             }
         } = req;
-        const dummyChat = await Chat.create({
-            message:message,
-            speaker:speaker,
-            joiningRoom: joiningRoom
-        });
-        res.send(dummyChat);
+        const targetRoom = await Room.findOne({_id:joiningRoom});
+        if(!targetRoom){
+            throw Error();
+        }
+        else{
+            const dummyChat = await Chat.create({
+                message:message,
+                speaker:speaker,
+                joiningRoom: joiningRoom
+            });
+            targetRoom.chatList.push(dummyChat.id);
+            targetRoom.save();
+            res.send(dummyChat);
+        }
     }
     catch(error){
         console.log(error);
@@ -95,7 +103,7 @@ export const dummyPostUser = async (req,res)=>{
             }
         });
         console.log("post user finished");
-        res.redirect("/api/users");
+        res.redirect("/api/getUsers");
     }
     catch(error){
         console.log(error);
@@ -114,7 +122,7 @@ export const dummyPostRoom = async(req,res)=>{
             }
         });
         console.log("post room finished");
-        res.redirect("/api/rooms");
+        res.redirect("/api/getRooms");
     }
     catch(error){
         console.log(error);
@@ -127,13 +135,13 @@ export const dummyPostChat = async (req, res) => {
             method:'POST',
             url:"http://192.168.35.62:4000/dummy/chat",
             data:{
-                message:"nodejs 정말 극혐이네요",
-                speaker:"5ff580df1feb980df879a8e7",
-                joiningRoom:"5ff586d7f044792e88e7985a",
+                message:"테스트 대화 3!",
+                speaker:"5ff854bdd17cbf4f8ce728be",
+                joiningRoom:"5ff9ac9d5ada9316fc244d44",
             }
         });
         console.log("post chat finished");
-        res.redirect("/api/chats");
+        res.redirect("/api/getChats");
     }
     catch(error){
         console.log(error);

@@ -5,7 +5,7 @@ import {
   dummyPostRoom,
   dummyPostUser,
 } from "../controllers/dummyController";
-import { createRoom } from "../controllers/roomController";
+import { createRoom, getRoomChat } from "../controllers/roomController";
 import {
   getUser,
   addFriend,
@@ -31,6 +31,9 @@ apiRouter.get(routes.getUser, getUser);
 apiRouter.post(routes.addFriend, addFriend);
 apiRouter.post(routes.removeFriend, removeFriend);
 apiRouter.post(routes.blockUser, blockUser);
+
+apiRouter.get(routes.getRoomChat, getRoomChat);
 apiRouter.post(routes.createRoom, createRoom);
+
 
 export default apiRouter;

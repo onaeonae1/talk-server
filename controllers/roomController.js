@@ -54,11 +54,12 @@ export const getRoomChat = async (req,res) =>{
       query:{roomId, from, amount}
     } = req;
     const targetRoom = await Room.findOne({_id:roomId});
-    console.log(targetRoom);
     const chatList = targetRoom.chatList;
     const fromIndex = chatList.indexOf(from);
     const start = fromIndex+1-amount<0 ? 0 : fromIndex+1-amount;
-    const slicedArr = chatList.slice(start, fromIndex);
+    const slicedArr = chatList.slice(start, fromIndex+1);
+    console.log(start);
+    console.log(fromIndex);
     res.send(slicedArr);
   }
   catch(error){

@@ -1,16 +1,21 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import morgan from "morgan";
+import helemt from "helmet";
 import apiRouter from "./routers/apiRouter";
 import dummyRouter from "./routers/dummyRouter";
 import roomRouter from "./routers/roomRouter";
 import {localsMiddleware} from "./middlewares";
 import routes from "./routes";
+import helmet from "helmet";
 //app 기본 설정
 const app = express();
 
 //cors
 app.use(cors());
+app.use(morgan("dev"));
+app.use(helmet());
 
 //body-parser
 app.use(express.json());
