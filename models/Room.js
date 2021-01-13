@@ -1,34 +1,34 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const RoomSchema = new mongoose.Schema({
   userList: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
   ],
   chatIdList: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Chat',
+      ref: "Chat",
     },
   ],
   roomName: {
     type: String,
-    required: 'Room name is required',
+    required: "Room name is required",
   },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: 'Creator is Required',
+    ref: "User",
+    required: "Creator is Required",
   },
   recentChat: {
     type: String,
-    default: '',
+    default: "",
   },
   recntChatTime: {
     type: Date,
   },
 });
-const model = mongoose.model('Room', RoomSchema);
+const model = mongoose.model("Room", RoomSchema);
 export default model;
