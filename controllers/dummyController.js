@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import mongoose from 'mongoose';
 import User from '../models/User';
 import Room from '../models/Room';
 import Chat from '../models/Chat';
@@ -153,5 +153,18 @@ export const dummySearch = async (req, res) => {
     res.send(slicedArr);
   } catch (error) {
     console.log('dummy search error');
+  }
+};
+
+export const dummyValid = async (req, res) => {
+  console.log('dummy valid test for User ID');
+  try {
+    const {
+      body: { testId },
+    } = req;
+    const result = mongoose.Types.ObjectId.isValid(testId);
+    res.send({ result });
+  } catch (error) {
+    res.send('test fail');
   }
 };

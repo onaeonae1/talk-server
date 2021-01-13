@@ -7,7 +7,7 @@ const RoomSchema = new mongoose.Schema({
       ref: 'User',
     },
   ],
-  chatList: [
+  chatIdList: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Chat',
@@ -25,6 +25,9 @@ const RoomSchema = new mongoose.Schema({
   recentChat: {
     type: String,
     default: '',
+  },
+  recntChatTime: {
+    type: Date,
   },
 });
 const model = mongoose.model('Room', RoomSchema);

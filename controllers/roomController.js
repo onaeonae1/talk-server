@@ -14,7 +14,7 @@ export const createRoom = async (req, res) => {
     if (!userList || !roomName || !creator) throw Error();
     const targetCreator = await User.findOne({ _id: creator });
     if (!targetCreator) {
-      throw Error();
+      throw Error('');
     }
     const room = await Room.create({
       userList,
@@ -44,7 +44,7 @@ export const invite = async (req, res) => {
     const targetGuest = await User.findOne({ _id: guestId });
     const targetHost = await User.findOne({ _id: hostId });
     if (!targetRoom || !targetGuest || !targetHost) {
-      throw Error();
+      throw Error('there is no room or guest or host');
     }
     targetRoom.userList.push(guestId);
     targetGuest.roomList.push(roomId);
@@ -57,7 +57,7 @@ export const invite = async (req, res) => {
   }
 };
 export const exitRoom = async (req, res) => {
-  console.log(exitRoom);
+  console.log('exit room');
   const {
     body: {
       roomId, userId,
@@ -73,7 +73,6 @@ export const exitRoom = async (req, res) => {
       targetUser.roomList.pull({ _id: roomId });
       targetRoom.save();
       targetUser.save();
-      console.log(`Exit room : ${targetRoom._id}`);
       res.send(targetUser);
     }
   } catch (error) {
@@ -84,14 +83,13 @@ export const getRoomChat = async (req, res) => {
   console.log('get Room Chat');
   try {
     const {
-
       query: { roomId, from, amount },
     } = req;
     const targetRoom = await Room.findOne({ _id: roomId });
-    const { chatList } = targetRoom;
-    const fromIndex = chatList.indexOf(from);
+    const { chatIdList } = targetRoom;
+    const fromIndex = chatIdList.indexOf(from);
     const start = fromIndex + 1 - amount < 0 ? 0 : fromIndex + 1 - amount;
-    const slicedArr = chatList.slice(start, fromIndex + 1);
+    const slicedArr = chatIdList.slice(start, fromIndex + 1);
     console.log(start);
     console.log(fromIndex);
     res.send(slicedArr);

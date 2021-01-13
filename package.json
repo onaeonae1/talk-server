@@ -25,6 +25,7 @@
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.0",
     "express": "^4.17.1",
+    "express-validator": "^6.9.2",
     "helmet": "^4.3.1",
     "http": "0.0.1-security",
     "mongoose": "^5.11.9",
