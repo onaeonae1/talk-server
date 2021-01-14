@@ -1,7 +1,7 @@
-import User from '../models/User';
+import User from "../models/User";
 
 export const getUser = async (req, res) => {
-  console.log('getUser');
+  console.log("getUser");
   const userId = req.query.id;
   try {
     const user = await User.findOne({ _id: userId })
@@ -18,20 +18,20 @@ export const getUser = async (req, res) => {
 };
 
 export const addFriend = async (req, res) => {
-  console.log('Add Friend');
+  console.log("Add Friend");
   try {
     const {
       body: { userId, friendId },
     } = req;
     const targetUser = await User.findOne({ _id: userId });
     if (targetUser.friendsList.includes(friendId)) {
-      const E = new Error('They Are Already Friend');
-      E.name = 'alreadyFriend';
+      const E = new Error("They Are Already Friend");
+      E.name = "alreadyFriend";
       throw E;
     } else {
       targetUser.friendsList.push(friendId);
       targetUser.save();
-      res.redirect('/api/getUsers');
+      res.redirect("/api/getUsers");
     }
   } catch (error) {
     console.log(error.stack);
@@ -39,7 +39,7 @@ export const addFriend = async (req, res) => {
   }
 };
 export const removeFriend = async (req, res) => {
-  console.log('Removing Friend');
+  console.log("Removing Friend");
   try {
     const {
       body: { userId, friendId },
@@ -50,7 +50,7 @@ export const removeFriend = async (req, res) => {
       if (targetUser.friendsList.includes(friendId)) {
         targetUser.friendsList.remove(friendId);
         targetUser.save();
-        res.redirect('/api/getUsers');
+        res.redirect("/api/getUsers");
       } else {
         throw Error('they are not friend');
       }
@@ -63,7 +63,7 @@ export const removeFriend = async (req, res) => {
   }
 };
 export const blockUser = async (req, res) => {
-  console.log('Block User');
+  console.log("Block User");
   try {
     const {
       body: { userId, blockId },
@@ -76,7 +76,7 @@ export const blockUser = async (req, res) => {
       } else {
         targetUser.blockList.push(blockId);
         targetUser.save();
-        res.redirect('/api/getUsers');
+        res.redirect("/api/getUsers");
       }
     } else {
       throw Error('there is no such user');
@@ -87,12 +87,10 @@ export const blockUser = async (req, res) => {
   }
 };
 export const changeProfile = async (req, res) => {
-  console.log('Change Profile');
+  console.log("Change Profile");
   try {
     const {
-      body: {
-        userId, avatarUrl, backgroundUrl, nickName, quoteMessage,
-      },
+      body: { userId, avatarUrl, backgroundUrl, nickName, quoteMessage },
     } = req;
     const updateUser = await User.findByIdAndUpdate(userId, {
       avatarUrl,
@@ -100,7 +98,6 @@ export const changeProfile = async (req, res) => {
       nickName,
       quoteMessage,
     });
-    updateUser.save();
     console.log(`Successfully Changed Profile : ${updateUser.nickName}`);
   } catch (error) {
     console.log(error.stack);
