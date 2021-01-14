@@ -6,6 +6,7 @@ import {
 } from './webSocketController';
 
 export const webSocketRouter = (messageObject, client) => {
+  console.log(messageObject);
   const { type, data } = messageObject;
 
   switch (type) {
