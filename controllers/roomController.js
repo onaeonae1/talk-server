@@ -1,8 +1,8 @@
-import User from '../models/User';
-import Room from '../models/Room';
+import User from "../models/User";
+import Room from "../models/Room";
 
 export const createRoom = async (req, res) => {
-  console.log('Create Room');
+  console.log("Create Room");
   let {
     body: { userList },
   } = req;
@@ -14,7 +14,7 @@ export const createRoom = async (req, res) => {
     if (!userList || !roomName || !creator) throw Error();
     const targetCreator = await User.findOne({ _id: creator });
     if (!targetCreator) {
-      throw Error('');
+      throw Error("");
     }
     const room = await Room.create({
       userList,
@@ -31,20 +31,20 @@ export const createRoom = async (req, res) => {
     console.log(error);
     res.send({
       statusCode: 400,
-      message: 'Failed to Create Room',
+      message: "Failed to Create Room",
     });
   }
 };
 
 export const invite = async (req, res) => {
-  console.log('Invite User');
+  console.log("Invite User");
   try {
     const { body: roomId, hostId, guestId } = req;
     const targetRoom = await Room.findOne({ _id: roomId });
     const targetGuest = await User.findOne({ _id: guestId });
     const targetHost = await User.findOne({ _id: hostId });
     if (!targetRoom || !targetGuest || !targetHost) {
-      throw Error('there is no room or guest or host');
+      throw Error("there is no room or guest or host");
     }
     targetRoom.userList.push(guestId);
     targetGuest.roomList.push(roomId);
@@ -52,22 +52,20 @@ export const invite = async (req, res) => {
   } catch (error) {
     res.send({
       statusCode: 400,
-      message: 'Failed to Invite User to Room',
+      message: "Failed to Invite User to Room",
     });
   }
 };
 export const exitRoom = async (req, res) => {
-  console.log('exit room');
+  console.log("exit room");
   const {
-    body: {
-      roomId, userId,
-    },
+    body: { roomId, userId },
   } = req;
   try {
     const targetRoom = await Room.findOne({ _id: roomId });
     const targetUser = await User.findOne({ _id: userId });
     if (!targetRoom || !targetUser) {
-      throw Error('no such user or room');
+      throw Error("no such user or room");
     } else {
       targetRoom.userList.pull({ _id: userId });
       targetUser.roomList.pull({ _id: roomId });
@@ -80,14 +78,17 @@ export const exitRoom = async (req, res) => {
   }
 };
 export const getRoomChat = async (req, res) => {
-  console.log('get Room Chat');
+  console.log("get Room Chat");
   try {
     const {
       query: { roomId, from, amount },
     } = req;
-    const targetRoom = await Room.findOne({ _id: roomId });
+    const targetRoom = await Room.findOne({ _id: roomId }).populate(
+      "chatIdList"
+    );
+
     const { chatIdList } = targetRoom;
-    const fromIndex = chatIdList.indexOf(from);
+    const fromIndex = chatIdList.map((item) => item._id).indexOf(from);
     const start = fromIndex + 1 - amount < 0 ? 0 : fromIndex + 1 - amount;
     const slicedArr = chatIdList.slice(start, fromIndex + 1);
     console.log(start);
