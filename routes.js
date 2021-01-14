@@ -1,27 +1,27 @@
 // API
-const API = "/api";
-const GET_USERS = "/getUsers";
-const GET_ROOMS = "/getRooms";
-const GET_CHATS = "/getChats";
+const API = '/api';
+const GET_USERS = '/getUsers';
+const GET_ROOMS = '/getRooms';
+const GET_CHATS = '/getChats';
 
-const GET_USER = "/getUser";
-const ADD_FRIEND = "/addFriend";
-const REMOVE_FRIEND = "/removeFriend";
-const BLOCK_USER = "/blockUser";
+const GET_USER = '/getUser';
+const ADD_FRIEND = '/addFriend';
+const REMOVE_FRIEND = '/removeFriend';
+const BLOCK_USER = '/blockUser';
 
-const TEST_USER = "/testUser";
-const TEST_ROOM = "/testRoom";
-const TEST_CHAT = "/testChat";
+const TEST_USER = '/testUser';
+const TEST_ROOM = '/testRoom';
+const TEST_CHAT = '/testChat';
 
 // ROOM
-const ROOM = "/room";
-const CREATE_ROOM = "/createRoom";
-const INVITE_ROOM = "/inviteRoom";
-const EXIT_ROOM = "/exitRoom";
-const GET_ROOM_CHAT = "/getRoomChat";
+const ROOM = '/room';
+const CREATE_ROOM = '/createRoom';
+const INVITE_ROOM = '/inviteRoom';
+const EXIT_ROOM = '/exitRoom';
+const GET_ROOM_CHAT = '/getRoomChat';
 
 // dummy
-const DUMMY = "/dummy";
+const DUMMY = '/dummy';
 
 const routes = {
   api: API,

@@ -1,23 +1,23 @@
-import express from "express";
-import { getUsers, getRooms, getChats } from "../controllers/apiController";
+import express from 'express';
+import { getUsers, getRooms, getChats } from '../controllers/apiController';
 import {
   dummyPostChat,
   dummyPostRoom,
   dummyPostUser,
-} from "../controllers/dummyController";
+} from '../controllers/dummyController';
 import {
   createRoom,
   exitRoom,
   getRoomChat,
   invite,
-} from "../controllers/roomController";
+} from '../controllers/roomController';
 import {
   getUser,
   addFriend,
   removeFriend,
   blockUser,
-} from "../controllers/userController";
-import routes from "../routes";
+} from '../controllers/userController';
+import routes from '../routes';
 
 const apiRouter = express.Router();
 

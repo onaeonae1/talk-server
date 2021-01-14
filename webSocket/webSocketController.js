@@ -1,6 +1,7 @@
 import { globalData } from '../globalData';
 import Chat from '../models/Chat';
 import Room from '../models/Room';
+import User from '../models/User';
 
 export const authenticate = (data, client) => {
   const { userId } = data;
@@ -32,7 +33,7 @@ export const sendRealTimeChat = async (data) => {
     room.save();
 
     const sendObject = {
-      type: "getRealTimeChat",
+      type: 'getRealTimeChat',
       data: {
         chat: newChat,
         roomId,

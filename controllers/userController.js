@@ -1,7 +1,7 @@
-import User from "../models/User";
+import User from '../models/User';
 
 export const getUser = async (req, res) => {
-  console.log("getUser");
+  console.log('getUser');
   const userId = req.query.id;
   try {
     const user = await User.findOne({ _id: userId })
@@ -18,20 +18,20 @@ export const getUser = async (req, res) => {
 };
 
 export const addFriend = async (req, res) => {
-  console.log("Add Friend");
+  console.log('Add Friend');
   try {
     const {
       body: { userId, friendId },
     } = req;
     const targetUser = await User.findOne({ _id: userId });
     if (targetUser.friendsList.includes(friendId)) {
-      const E = new Error("They Are Already Friend");
-      E.name = "alreadyFriend";
+      const E = new Error('They Are Already Friend');
+      E.name = 'alreadyFriend';
       throw E;
     } else {
       targetUser.friendsList.push(friendId);
       targetUser.save();
-      res.redirect("/api/getUsers");
+      res.redirect('/api/getUsers');
     }
   } catch (error) {
     console.log(error.stack);
@@ -39,18 +39,18 @@ export const addFriend = async (req, res) => {
   }
 };
 export const removeFriend = async (req, res) => {
-  console.log("Removing Friend");
+  console.log('Removing Friend');
   try {
     const {
       body: { userId, friendId },
     } = req;
     const targetUser = await User.findOne({ _id: userId });
-    const targetFriend = await User.findOne({ _id: userId });
-    if (targetFriend) {
+    if (await User.findOne({ _id: friendId })) {
+      console.log(`deleting friend : ${friendId}`);
       if (targetUser.friendsList.includes(friendId)) {
         targetUser.friendsList.remove(friendId);
         targetUser.save();
-        res.redirect("/api/getUsers");
+        res.redirect('/api/getUsers');
       } else {
         throw Error('they are not friend');
       }
@@ -63,20 +63,19 @@ export const removeFriend = async (req, res) => {
   }
 };
 export const blockUser = async (req, res) => {
-  console.log("Block User");
+  console.log('Block User');
   try {
     const {
       body: { userId, blockId },
     } = req;
     const targetUser = await User.findOne({ _id: userId });
-    const targetBlockUser = await User.findOne({ _id: blockId });
-    if (targetBlockUser) {
+    if (await User.findOne({ _id: blockId })) {
       if (targetUser.blockList.includes(blockId)) {
         throw Error('already blocked');
       } else {
         targetUser.blockList.push(blockId);
         targetUser.save();
-        res.redirect("/api/getUsers");
+        res.redirect('/api/getUsers');
       }
     } else {
       throw Error('there is no such user');
@@ -87,10 +86,12 @@ export const blockUser = async (req, res) => {
   }
 };
 export const changeProfile = async (req, res) => {
-  console.log("Change Profile");
+  console.log('Change Profile');
   try {
     const {
-      body: { userId, avatarUrl, backgroundUrl, nickName, quoteMessage },
+      body: {
+        userId, avatarUrl, backgroundUrl, nickName, quoteMessage,
+      },
     } = req;
     const updateUser = await User.findByIdAndUpdate(userId, {
       avatarUrl,
@@ -103,4 +104,10 @@ export const changeProfile = async (req, res) => {
     console.log(error.stack);
     res.status(400).send('Failed to change Profile');
   }
+};
+export const searchUser = async (req, res) => {
+  // 유저 중에서 검색
+};
+export const searchFriend = async (req, res) => {
+  // 친구 중에서 검색
 };

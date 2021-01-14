@@ -12,8 +12,7 @@ export const createRoom = async (req, res) => {
   userList = JSON.parse(userList);
   try {
     if (!userList || !roomName || !creator) throw Error();
-    const targetCreator = await User.findOne({ _id: creator });
-    if (!targetCreator) {
+    if (!await User.findOne({ _id: creator })) {
       throw Error('');
     }
     const room = await Room.create({
@@ -80,9 +79,9 @@ export const getRoomChat = async (req, res) => {
       query: { roomId, from, amount },
     } = req;
     const targetRoom = await Room.findOne({ _id: roomId }).populate({
-      path: "chatIdList",
+      path: 'chatIdList',
       populate: {
-        path: "speaker",
+        path: 'speaker',
       },
     });
     const { chatIdList } = targetRoom;
