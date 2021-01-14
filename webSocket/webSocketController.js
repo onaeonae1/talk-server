@@ -27,6 +27,7 @@ export const sendRealTimeChat = async (data) => {
   });
   room.chatList.push(newChat);
   room.recentChat = chat;
+  room.recentChatTime = Date.now();
   room.save();
 
   const sendObject = {
