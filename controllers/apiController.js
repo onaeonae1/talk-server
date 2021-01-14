@@ -8,10 +8,8 @@ export const getUsers = async (req, res) => {
     const users = await User.find({}).sort({ _id: -1 });
     res.send(users);
   } catch (error) {
-    res.send({
-      statuscode: 400,
-      message: 'Internal Server Error',
-    });
+    console.log(error.stack);
+    res.status(400).send('Failed to get Users');
   }
 };
 export const getRooms = async (req, res) => {
@@ -20,10 +18,8 @@ export const getRooms = async (req, res) => {
     const rooms = await Room.find({}).sort({ _id: -1 });
     res.send(rooms);
   } catch (error) {
-    res.send({
-      statuscode: 400,
-      message: 'Internal Server Error',
-    });
+    console.log(error.stack);
+    res.status(400).send('Failed to get Rooms');
   }
 };
 export const getChats = async (req, res) => {
@@ -32,9 +28,7 @@ export const getChats = async (req, res) => {
     const chats = await Chat.find({}).sort({ _id: -1 });
     res.send(chats);
   } catch (error) {
-    res.send({
-      statuscode: 400,
-      message: 'Internal Server Error',
-    });
+    console.log(error.stack);
+    res.status(400).send('Failed to get Chats');
   }
 };

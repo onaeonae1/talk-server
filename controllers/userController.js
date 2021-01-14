@@ -7,13 +7,13 @@ export const getUser = async (req, res) => {
     const user = await User.findOne({ _id: userId })
       .populate('friendsList')
       .populate('roomList');
-    // if (!user) throw Error();
+    if (!user) {
+      throw Error('there is no user');
+    }
     res.send(user);
   } catch (error) {
-    res.send({
-      statuscode: 400,
-      message: 'No such People',
-    });
+    console.log(error.stack);
+    res.status(400).send('Failed to get User');
   }
 };
 
@@ -34,10 +34,8 @@ export const addFriend = async (req, res) => {
       res.redirect('/api/getUsers');
     }
   } catch (error) {
-    res.send({
-      name: error.name,
-      message: error.message,
-    });
+    console.log(error.stack);
+    res.status(400).send('Failed to add Friend');
   }
 };
 export const removeFriend = async (req, res) => {
@@ -54,20 +52,14 @@ export const removeFriend = async (req, res) => {
         targetUser.save();
         res.redirect('/api/getUsers');
       } else {
-        const E = new Error('There is No Such Friend');
-        E.name = 'noSuchFriend';
-        throw E;
+        throw Error('they are not friend');
       }
     } else {
-      const E = new Error('There is No Such User with ID');
-      E.name = 'noSuchUser';
-      throw E;
+      throw Error('failed to find friend');
     }
   } catch (error) {
-    res.send({
-      name: error.name,
-      message: error.message,
-    });
+    console.log(error.stack);
+    res.status(400).send('Failed to remove friend');
   }
 };
 export const blockUser = async (req, res) => {
@@ -80,24 +72,18 @@ export const blockUser = async (req, res) => {
     const targetBlockUser = await User.findOne({ _id: blockId });
     if (targetBlockUser) {
       if (targetUser.blockList.includes(blockId)) {
-        const E = new Error(`Already Blocked : ${blockId}`);
-        E.name = 'alreadyBlocked';
-        throw E;
+        throw Error('already blocked');
       } else {
         targetUser.blockList.push(blockId);
         targetUser.save();
         res.redirect('/api/getUsers');
       }
     } else {
-      const E = new Error('There is No Such User with ID');
-      E.name = 'noSuchUser';
-      throw E;
+      throw Error('there is no such user');
     }
   } catch (error) {
-    res.send({
-      name: error.name,
-      message: error.message,
-    });
+    console.log(error.stack);
+    res.status(400).send('Failed to block User');
   }
 };
 export const changeProfile = async (req, res) => {
@@ -108,18 +94,16 @@ export const changeProfile = async (req, res) => {
         userId, avatarUrl, backgroundUrl, nickName, quoteMessage,
       },
     } = req;
-    const targetUser = await User.findById(userId);
-    targetUser.avatarUrl = avatarUrl;
-    targetUser.backgroundUrl = backgroundUrl;
-    targetUser.nickName = nickName;
-    targetUser.quoteMessage = quoteMessage;
-    targetUser.save();
-    console.log('Successfully Changed Profile');
-    console.log(targetUser.nickName);
-  } catch (error) {
-    res.send({
-      statuscode: 400,
-      message: 'Failed to Change Profile',
+    const updateUser = await User.findByIdAndUpdate(userId, {
+      avatarUrl,
+      backgroundUrl,
+      nickName,
+      quoteMessage,
     });
+    updateUser.save();
+    console.log(`Successfully Changed Profile : ${updateUser.nickName}`);
+  } catch (error) {
+    console.log(error.stack);
+    res.status(400).send('Failed to change Profile');
   }
 };
