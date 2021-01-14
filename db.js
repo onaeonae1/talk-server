@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import configs from './configs';
 
-dotenv.config();
-const mongoUrl = process.env.MONGO_PROD_URL;
+const mongoUrl = configs.database;
 console.log(`Try to Connect : ${mongoUrl}`);
 mongoose.connect(
   mongoUrl,

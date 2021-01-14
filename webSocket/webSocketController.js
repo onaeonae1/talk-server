@@ -1,7 +1,6 @@
-import { globalData } from "../globalData";
-import Chat from "../models/Chat";
-import Room from "../models/Room";
-import User from "../models/User";
+import { globalData } from '../globalData';
+import Chat from '../models/Chat';
+import Room from '../models/Room';
 
 export const authenticate = (data, client) => {
   const { userId } = data;
