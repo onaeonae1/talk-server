@@ -1,6 +1,7 @@
 import { globalData } from "../globalData";
 import Chat from "../models/Chat";
 import Room from "../models/Room";
+import User from "../models/User";
 
 export const authenticate = (data, client) => {
   const { userId } = data;
@@ -12,36 +13,42 @@ export const authenticate = (data, client) => {
   //   globalData.verifiedLogin[data.authKey] = undefined;
   // }
   // 로그인 기능이 완성되면 적용
-
-  globalData.verifiedLogin[userId] = client;
+  globalData.verifiedLogin.set(String(userId), client);
 };
 
 export const sendRealTimeChat = async (data) => {
   const { roomId, userId, chat } = data;
+  try {
+    const room = await Room.findById(roomId);
+    const speaker = await User.findById(userId);
+    const newChat = await Chat.create({
+      message: chat,
+      speaker,
+      joiningRoom: roomId,
+    });
 
-  const room = await Room.findById(roomId);
-  const newChat = await Chat.create({
-    message: chat,
-    speaker: userId,
-    joiningRoom: roomId,
-  });
-  room.chatList.push(newChat);
-  room.recentChat = chat;
-  room.save();
+    room.chatIdList.push(newChat);
+    room.recentChat = chat;
+    room.recentChatTime = newChat.createdAt;
+    room.save();
 
-  const sendObject = {
-    type: "getRealTimeChat",
-    data: {
-      chat,
-      roomId,
-    },
-  };
-  room.userList.forEach((item) => {
-    const target = globalData.connectingUser[item._id];
-    if (target) {
-      target.send(JSON.stringify(sendObject));
-    }
-  });
+    const sendObject = {
+      type: "getRealTimeChat",
+      data: {
+        chat: newChat,
+        roomId,
+      },
+    };
+
+    room.userList.forEach((item) => {
+      const target = globalData.verifiedLogin.get(String(item));
+      if (target) {
+        target.send(JSON.stringify(sendObject));
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 export const quitServer = (data) => {
   const { userId } = data;

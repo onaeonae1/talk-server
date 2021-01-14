@@ -83,16 +83,18 @@ export const getRoomChat = async (req, res) => {
     const {
       query: { roomId, from, amount },
     } = req;
-    const targetRoom = await Room.findOne({ _id: roomId }).populate(
-      "chatIdList"
-    );
+    const targetRoom = await Room.findOne({ _id: roomId }).populate({
+      path: "chatIdList",
+      populate: {
+        path: "speaker",
+      },
+    });
 
     const { chatIdList } = targetRoom;
     const fromIndex = chatIdList.map((item) => item._id).indexOf(from);
     const start = fromIndex + 1 - amount < 0 ? 0 : fromIndex + 1 - amount;
     const slicedArr = chatIdList.slice(start, fromIndex + 1);
-    console.log(start);
-    console.log(fromIndex);
+    // console.log(start, fromIndex);
     res.send(slicedArr);
   } catch (error) {
     res.send(error);

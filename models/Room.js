@@ -28,6 +28,7 @@ const RoomSchema = new mongoose.Schema({
   },
   recntChatTime: {
     type: Date,
+    default: Date.now(),
   },
 });
 const model = mongoose.model("Room", RoomSchema);
