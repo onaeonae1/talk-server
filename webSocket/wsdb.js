@@ -4,7 +4,7 @@ import path from 'path';
 
 dotenv.config(path.join(__dirname, '../'));
 const mongoUrl = process.env.MONGO_PROD_URL;
-console.log(`Try to Connect : ${mongoUrl}`);
+console.log(`(Socket DB)Try to Connect : ${mongoUrl}`);
 mongoose.connect(
   mongoUrl,
   {

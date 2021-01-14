@@ -1,23 +1,25 @@
+/* eslint-disable import/prefer-default-export */
 import {
   authenticate,
   quitServer,
   sendRealTimeChat,
-} from "./webSocketController";
+} from './webSocketController';
 
 export const webSocketRouter = (messageObject, client) => {
   const { type, data } = messageObject;
 
   switch (type) {
-    case "authenticate":
+    case 'authenticate':
       authenticate(data, client);
       break;
-    case "sendRealTimeChat":
+    case 'sendRealTimeChat':
       sendRealTimeChat(data);
       break;
-    case "quitServer":
+    case 'quitServer':
       quitServer(data, client);
+      break;
     default:
-      console.log("Error Wrong message:" + JSON.stringify(messageObject));
+      console.log(`Error Wrong message:${JSON.stringify(messageObject)}`);
       break;
   }
 };

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import configs from './configs';
 
 const mongoUrl = configs.database;
-console.log(`Try to Connect : ${mongoUrl}`);
+console.log(`(Main DB) Try to Connect : ${mongoUrl}`);
 mongoose.connect(
   mongoUrl,
   {
