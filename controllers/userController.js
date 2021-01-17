@@ -25,9 +25,7 @@ export const addFriend = async (req, res) => {
     } = req;
     const targetUser = await User.findOne({ _id: userId });
     if (targetUser.friendsList.includes(friendId)) {
-      const E = new Error('They Are Already Friend');
-      E.name = 'alreadyFriend';
-      throw E;
+      throw Error('they are already friend');
     } else {
       targetUser.friendsList.push(friendId);
       targetUser.save();
