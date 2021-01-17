@@ -9,5 +9,6 @@
 ## Things to Apply for Project
 - Clean Code
 - Error Handling
+- JWT
 - Using Jest
 - Using Mongoose Hook -> to check references when deleting

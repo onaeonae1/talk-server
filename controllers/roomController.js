@@ -1,5 +1,7 @@
 import User from '../models/User';
 import Room from '../models/Room';
+import Chat from '../models/Chat';
+import { globalData } from '../globalData';
 
 export const createRoom = async (req, res) => {
   console.log('Create Room');
@@ -12,7 +14,7 @@ export const createRoom = async (req, res) => {
   userList = JSON.parse(userList);
   try {
     if (!userList || !roomName || !creator) throw Error();
-    if (!await User.findOne({ _id: creator })) {
+    if (!(await User.findOne({ _id: creator }))) {
       throw Error('');
     }
     const room = await Room.create({
@@ -20,11 +22,25 @@ export const createRoom = async (req, res) => {
       roomName,
       creator,
     });
-    await userList.map(async (item) => {
+    await userList.forEach(async (item) => {
       const user = await User.findById(item);
       user.roomList.push(room._id);
-      user.save();
+      await user.save();
     });
+
+    // 새로고침 시키기
+    userList.forEach((item) => {
+      const target = globalData.verifiedLogin[String(item)];
+      if (target) {
+        target.send(
+          JSON.stringify({
+            type: 'doReload',
+            data: {},
+          }),
+        );
+      }
+    });
+
     res.send(room);
   } catch (error) {
     console.log(error.stack);
@@ -44,7 +60,18 @@ export const invite = async (req, res) => {
     }
     targetRoom.userList.push(guestId);
     targetGuest.roomList.push(roomId);
-    targetRoom.save();
+
+    const target = globalData.verifiedLogin[String(guestId)];
+    if (target) {
+      target.send(
+        JSON.stringify({
+          type: 'doReload',
+          data: {},
+        }),
+      );
+    }
+
+    await targetRoom.save();
   } catch (error) {
     console.log(error.stack);
     res.status(400).send('Failed to invite user');
@@ -63,9 +90,30 @@ export const exitRoom = async (req, res) => {
     } else {
       targetRoom.userList.pull({ _id: userId });
       targetUser.roomList.pull({ _id: roomId });
-      targetRoom.save();
-      targetUser.save();
-      res.send(targetUser);
+
+      await targetRoom.save();
+      await targetUser.save();
+
+      targetRoom.userList.forEach((item) => {
+        const target = globalData.verifiedLogin[String(item)];
+        if (target) {
+          target.send(
+            JSON.stringify({
+              type: 'doReload',
+              data: {},
+            }),
+          );
+        }
+      });
+
+      // 다 나가면 방의 모든 챗 지움
+      if (targetRoom.userList.length === 0) {
+        await targetRoom.chatIdList.forEach(async (item) => {
+          await Chat.findByIdAndRemove(item);
+        });
+        await Room.findByIdAndRemove(targetRoom._id);
+      }
+      res.send('succesfully exited Room');
     }
   } catch (error) {
     console.log(error.stack);

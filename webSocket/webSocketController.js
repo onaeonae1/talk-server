@@ -30,7 +30,7 @@ export const sendRealTimeChat = async (data) => {
     room.chatIdList.push(newChat);
     room.recentChat = chat;
     room.recentChatTime = newChat.createdAt;
-    room.save();
+    await room.save();
 
     const sendObject = {
       type: 'getRealTimeChat',

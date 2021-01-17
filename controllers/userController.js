@@ -28,7 +28,7 @@ export const addFriend = async (req, res) => {
       throw Error('they are already friend');
     } else {
       targetUser.friendsList.push(friendId);
-      targetUser.save();
+      await targetUser.save();
       res.redirect('/api/getUsers');
     }
   } catch (error) {
@@ -47,7 +47,7 @@ export const removeFriend = async (req, res) => {
       console.log(`deleting friend : ${friendId}`);
       if (targetUser.friendsList.includes(friendId)) {
         targetUser.friendsList.remove(friendId);
-        targetUser.save();
+        await targetUser.save();
         res.redirect('/api/getUsers');
       } else {
         throw Error('they are not friend');
@@ -72,7 +72,7 @@ export const blockUser = async (req, res) => {
         throw Error('already blocked');
       } else {
         targetUser.blockList.push(blockId);
-        targetUser.save();
+        await targetUser.save();
         res.redirect('/api/getUsers');
       }
     } else {
