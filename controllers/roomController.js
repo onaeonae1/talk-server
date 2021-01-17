@@ -1,8 +1,10 @@
-import User from '../models/User';
-import Room from '../models/Room';
+import User from "../models/User";
+import Room from "../models/Room";
+import Chat from "../models/Chat";
+import { globalData } from "../globalData";
 
 export const createRoom = async (req, res) => {
-  console.log('Create Room');
+  console.log("Create Room");
   let {
     body: { userList },
   } = req;
@@ -12,28 +14,42 @@ export const createRoom = async (req, res) => {
   userList = JSON.parse(userList);
   try {
     if (!userList || !roomName || !creator) throw Error();
-    if (!await User.findOne({ _id: creator })) {
-      throw Error('');
+    if (!(await User.findOne({ _id: creator }))) {
+      throw Error("");
     }
     const room = await Room.create({
       userList,
       roomName,
       creator,
     });
-    await userList.map(async (item) => {
+    await userList.forEach(async (item) => {
       const user = await User.findById(item);
       user.roomList.push(room._id);
-      user.save();
+      await user.save();
     });
+
+    //새로고침 시키기
+    userList.forEach((item) => {
+      const target = globalData.verifiedLogin[String(item)];
+      if (target) {
+        target.send(
+          JSON.stringify({
+            type: "doReload",
+            data: {},
+          })
+        );
+      }
+    });
+
     res.send(room);
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send('Failed to Create Room');
+    res.status(400).send("Failed to Create Room");
   }
 };
 
 export const invite = async (req, res) => {
-  console.log('Invite User');
+  console.log("Invite User");
   try {
     const { body: roomId, hostId, guestId } = req;
     const targetRoom = await Room.findOne({ _id: roomId });
@@ -44,14 +60,24 @@ export const invite = async (req, res) => {
     }
     targetRoom.userList.push(guestId);
     targetGuest.roomList.push(roomId);
-    targetRoom.save();
+
+    const target = globalData.verifiedLogin[String(guestId)];
+    if (target)
+      target.send(
+        JSON.stringify({
+          type: "doReload",
+          data: {},
+        })
+      );
+
+    await targetRoom.save();
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send('Failed to invite user');
+    res.status(400).send("Failed to invite user");
   }
 };
 export const exitRoom = async (req, res) => {
-  console.log('exit room');
+  console.log("exit room");
   const {
     body: { roomId, userId },
   } = req;
@@ -63,25 +89,45 @@ export const exitRoom = async (req, res) => {
     } else {
       targetRoom.userList.pull({ _id: userId });
       targetUser.roomList.pull({ _id: roomId });
-      targetRoom.save();
-      targetUser.save();
-      res.send(targetUser);
+
+      await targetRoom.save();
+      await targetUser.save();
+
+      targetRoom.userList.forEach((item) => {
+        const target = globalData.verifiedLogin[String(item)];
+        if (target)
+          target.send(
+            JSON.stringify({
+              type: "doReload",
+              data: {},
+            })
+          );
+      });
+
+      // 다 나가면 방의 모든 챗 지움
+      if (targetRoom.userList.length === 0) {
+        await targetRoom.chatIdList.forEach(async (item) => {
+          await Chat.findByIdAndRemove(item);
+        });
+        await Room.findByIdAndRemove(targetRoom._id);
+      }
+      res.send("succesfully exited Room");
     }
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send('Failed to exit Room');
+    res.status(400).send("Failed to exit Room");
   }
 };
 export const getRoomChat = async (req, res) => {
-  console.log('get Room Chat');
+  console.log("get Room Chat");
   try {
     const {
       query: { roomId, from, amount },
     } = req;
     const targetRoom = await Room.findOne({ _id: roomId }).populate({
-      path: 'chatIdList',
+      path: "chatIdList",
       populate: {
-        path: 'speaker',
+        path: "speaker",
       },
     });
     const { chatIdList } = targetRoom;
@@ -92,6 +138,6 @@ export const getRoomChat = async (req, res) => {
     res.send(slicedArr);
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send('Failed to get Room Chat');
+    res.status(400).send("Failed to get Room Chat");
   }
 };

@@ -1,45 +1,45 @@
-import User from '../models/User';
+import User from "../models/User";
 
 export const getUser = async (req, res) => {
-  console.log('getUser');
+  console.log("getUser");
   const userId = req.query.id;
   try {
     const user = await User.findOne({ _id: userId })
-      .populate('friendsList')
-      .populate('roomList');
+      .populate("friendsList")
+      .populate("roomList");
     if (!user) {
-      throw Error('there is no user');
+      throw Error("there is no user");
     }
     res.send(user);
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send('Failed to get User');
+    res.status(400).send("Failed to get User");
   }
 };
 
 export const addFriend = async (req, res) => {
-  console.log('Add Friend');
+  console.log("Add Friend");
   try {
     const {
       body: { userId, friendId },
     } = req;
     const targetUser = await User.findOne({ _id: userId });
     if (targetUser.friendsList.includes(friendId)) {
-      const E = new Error('They Are Already Friend');
-      E.name = 'alreadyFriend';
+      const E = new Error("They Are Already Friend");
+      E.name = "alreadyFriend";
       throw E;
     } else {
       targetUser.friendsList.push(friendId);
-      targetUser.save();
-      res.redirect('/api/getUsers');
+      await targetUser.save();
+      res.redirect("/api/getUsers");
     }
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send('Failed to add Friend');
+    res.status(400).send("Failed to add Friend");
   }
 };
 export const removeFriend = async (req, res) => {
-  console.log('Removing Friend');
+  console.log("Removing Friend");
   try {
     const {
       body: { userId, friendId },
@@ -49,21 +49,21 @@ export const removeFriend = async (req, res) => {
       console.log(`deleting friend : ${friendId}`);
       if (targetUser.friendsList.includes(friendId)) {
         targetUser.friendsList.remove(friendId);
-        targetUser.save();
-        res.redirect('/api/getUsers');
+        await targetUser.save();
+        res.redirect("/api/getUsers");
       } else {
-        throw Error('they are not friend');
+        throw Error("they are not friend");
       }
     } else {
-      throw Error('failed to find friend');
+      throw Error("failed to find friend");
     }
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send('Failed to remove friend');
+    res.status(400).send("Failed to remove friend");
   }
 };
 export const blockUser = async (req, res) => {
-  console.log('Block User');
+  console.log("Block User");
   try {
     const {
       body: { userId, blockId },
@@ -71,27 +71,25 @@ export const blockUser = async (req, res) => {
     const targetUser = await User.findOne({ _id: userId });
     if (await User.findOne({ _id: blockId })) {
       if (targetUser.blockList.includes(blockId)) {
-        throw Error('already blocked');
+        throw Error("already blocked");
       } else {
         targetUser.blockList.push(blockId);
-        targetUser.save();
-        res.redirect('/api/getUsers');
+        await targetUser.save();
+        res.redirect("/api/getUsers");
       }
     } else {
-      throw Error('there is no such user');
+      throw Error("there is no such user");
     }
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send('Failed to block User');
+    res.status(400).send("Failed to block User");
   }
 };
 export const changeProfile = async (req, res) => {
-  console.log('Change Profile');
+  console.log("Change Profile");
   try {
     const {
-      body: {
-        userId, avatarUrl, backgroundUrl, nickName, quoteMessage,
-      },
+      body: { userId, avatarUrl, backgroundUrl, nickName, quoteMessage },
     } = req;
     const updateUser = await User.findByIdAndUpdate(userId, {
       avatarUrl,
@@ -102,7 +100,7 @@ export const changeProfile = async (req, res) => {
     console.log(`Successfully Changed Profile : ${updateUser.nickName}`);
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send('Failed to change Profile');
+    res.status(400).send("Failed to change Profile");
   }
 };
 export const searchUser = async (req, res) => {
