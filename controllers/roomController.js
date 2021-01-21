@@ -11,7 +11,7 @@ export const createRoom = async (req, res) => {
   const {
     body: { roomName, creator },
   } = req;
-  userList = JSON.parse(userList);
+  // console.log(userList, roomName, creator);
   try {
     if (!userList || !roomName || !creator) throw Error();
     if (!(await User.findOne({ _id: creator }))) {
@@ -30,7 +30,7 @@ export const createRoom = async (req, res) => {
 
     // 새로고침 시키기
     userList.forEach((item) => {
-      const target = globalData.verifiedLogin[String(item)];
+      const target = globalData.verifiedLogin.get(String(item));
       if (target) {
         target.send(
           JSON.stringify({
@@ -61,7 +61,7 @@ export const invite = async (req, res) => {
     targetRoom.userList.push(guestId);
     targetGuest.roomList.push(roomId);
 
-    const target = globalData.verifiedLogin[String(guestId)];
+    const target = globalData.verifiedLogin.get(String(guestId));
     if (target) {
       target.send(
         JSON.stringify({
@@ -72,7 +72,7 @@ export const invite = async (req, res) => {
     }
 
     targetRoom.userList.forEach((item) => {
-      const tgt = globalData.verifiedLogin[String(guestId)];
+      const tgt = globalData.verifiedLogin.get(String(guestId));
       if (String(item._id) !== String(targetGuest._id) && tgt) {
         target.send(
           JSON.stringify({
@@ -112,7 +112,7 @@ export const exitRoom = async (req, res) => {
       await targetUser.save();
 
       targetRoom.userList.forEach((item) => {
-        const target = globalData.verifiedLogin[String(item)];
+        const target = globalData.verifiedLogin.get(String(item));
         if (target) {
           target.send(
             JSON.stringify({
@@ -128,7 +128,11 @@ export const exitRoom = async (req, res) => {
       });
 
       // 다 나가면 방의 모든 챗 지움
-      if (targetRoom.userList.length === 0) {
+      if (targetRoom.userList.length === 1) {
+        const lastUser = await User.findById(targetRoom.userList[0]);
+        lastUser.roomList.pull({ _id: roomId });
+        await lastUser.save();
+
         await targetRoom.chatIdList.forEach(async (item) => {
           await Chat.findByIdAndRemove(item);
         });
