@@ -1,3 +1,5 @@
+import { register } from './controllers/userController';
+
 // API
 const API = '/api';
 const GET_USERS = '/getUsers';
@@ -8,6 +10,8 @@ const GET_USER = '/getUser';
 const ADD_FRIEND = '/addFriend';
 const REMOVE_FRIEND = '/removeFriend';
 const BLOCK_USER = '/blockUser';
+const LOGIN = '/login';
+const REGISTER = '/register';
 
 const TEST_USER = '/testUser';
 const TEST_ROOM = '/testRoom';
@@ -32,6 +36,8 @@ const routes = {
   addFriend: ADD_FRIEND,
   removeFriend: REMOVE_FRIEND,
   blockUser: BLOCK_USER,
+  login: LOGIN,
+  register: REGISTER,
   testUser: TEST_USER,
   testRoom: TEST_ROOM,
   testChat: TEST_CHAT,

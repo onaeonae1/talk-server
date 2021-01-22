@@ -1,4 +1,6 @@
+/* eslint-disable func-names */
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 // Schema 정의
 const UserSchema = new mongoose.Schema({
@@ -6,9 +8,13 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: 'String is required',
   },
-  password: {
+  dmMap: {
+    type: Map,
+    of: mongoose.Schema.Types.ObjectId,
+  },
+  hashedPassword: {
     type: String,
-    minlength: 5,
+    required: 'hashed password is required',
   },
   isConnecting: {
     type: Boolean,
@@ -52,11 +58,22 @@ const UserSchema = new mongoose.Schema({
     },
   ],
 });
-
-// Schema Hook 추가
-UserSchema.pre('save', (next) => {
-  console.log('pre save Hook Activated');
-  next();
-});
+// Schema Methods
+UserSchema.methods.setPassword = async (password) => {
+  const hash = await bcrypt.hash(password, 10);
+  this.hashedPassword = hash;
+};
+UserSchema.methods.checkPassword = async function (password) {
+  const result = await bcrypt.compare(password, this.hashedPassword);
+  return result;
+};
+UserSchema.statics.findByUsername = async function (userName) {
+  const result = await this.findOne({ userName });
+  return result;
+};
+UserSchema.statics.findByEmail = async function (email) {
+  const result = await this.findOne({ email });
+  return result;
+};
 const model = mongoose.model('User', UserSchema);
 export default model;

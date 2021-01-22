@@ -16,6 +16,8 @@ import {
   addFriend,
   removeFriend,
   blockUser,
+  login,
+  register,
 } from '../controllers/userController';
 import routes from '../routes';
 
@@ -30,12 +32,14 @@ apiRouter.get(routes.getChats, getChats);
 apiRouter.get(routes.testUser, dummyPostUser);
 apiRouter.get(routes.testRoom, dummyPostRoom);
 apiRouter.get(routes.testChat, dummyPostChat);
+apiRouter.post(routes.login, login);
 
 // Implemented Functions : userController
 apiRouter.get(routes.getUser, getUser);
 apiRouter.post(routes.addFriend, addFriend);
 apiRouter.post(routes.removeFriend, removeFriend);
 apiRouter.post(routes.blockUser, blockUser);
+apiRouter.post(routes.register, register);
 
 // Implemented Functions : roomController
 apiRouter.get(routes.getRoomChat, getRoomChat);
