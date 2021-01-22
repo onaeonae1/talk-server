@@ -1,5 +1,3 @@
-import { register } from './controllers/userController';
-
 // API
 const API = '/api';
 const GET_USERS = '/getUsers';
@@ -11,6 +9,7 @@ const ADD_FRIEND = '/addFriend';
 const REMOVE_FRIEND = '/removeFriend';
 const BLOCK_USER = '/blockUser';
 const LOGIN = '/login';
+const LOGOUT = '/logout';
 const REGISTER = '/register';
 
 const TEST_USER = '/testUser';

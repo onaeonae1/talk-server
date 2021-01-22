@@ -67,10 +67,6 @@ UserSchema.methods.checkPassword = async function (password) {
   const result = await bcrypt.compare(password, this.hashedPassword);
   return result;
 };
-UserSchema.statics.findByUsername = async function (userName) {
-  const result = await this.findOne({ userName });
-  return result;
-};
 UserSchema.statics.findByEmail = async function (email) {
   const result = await this.findOne({ email });
   return result;

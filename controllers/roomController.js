@@ -1,11 +1,11 @@
-import User from "../models/User";
-import Room from "../models/Room";
-import Chat from "../models/Chat";
-import { globalData } from "../globalData";
+import User from '../models/User';
+import Room from '../models/Room';
+import Chat from '../models/Chat';
+import { globalData } from '../globalData';
 
 export const createRoom = async (req, res) => {
-  console.log("Create Room");
-  let {
+  console.log('Create Room');
+  const {
     body: { userList },
   } = req;
   const {
@@ -15,7 +15,7 @@ export const createRoom = async (req, res) => {
   try {
     if (!userList || !roomName || !creator) throw Error();
     if (!(await User.findOne({ _id: creator }))) {
-      throw Error("");
+      throw Error('');
     }
     const room = await Room.create({
       userList,
@@ -34,9 +34,9 @@ export const createRoom = async (req, res) => {
       if (target) {
         target.send(
           JSON.stringify({
-            type: "getNewRoom",
+            type: 'getNewRoom',
             data: { room },
-          })
+          }),
         );
       }
     });
@@ -44,12 +44,12 @@ export const createRoom = async (req, res) => {
     res.send(room);
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send("Failed to Create Room");
+    res.status(400).send('Failed to Create Room');
   }
 };
 
 export const invite = async (req, res) => {
-  console.log("Invite User");
+  console.log('Invite User');
   try {
     const { body: roomId, hostId, guestId } = req;
     const targetRoom = await Room.findOne({ _id: roomId });
@@ -65,9 +65,9 @@ export const invite = async (req, res) => {
     if (target) {
       target.send(
         JSON.stringify({
-          type: "getNewRoom",
+          type: 'getNewRoom',
           data: { room: targetRoom },
-        })
+        }),
       );
     }
 
@@ -76,26 +76,26 @@ export const invite = async (req, res) => {
       if (String(item._id) !== String(targetGuest._id) && tgt) {
         target.send(
           JSON.stringify({
-            type: "changeRoomPeople",
+            type: 'changeRoomPeople',
             data: {
               roomId: targetRoom._id,
               userId: targetUser._id,
               isOut: false,
             },
-          })
+          }),
         );
       }
     });
 
     await targetRoom.save();
-    res.send("succesfully invited");
+    res.send('succesfully invited');
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send("Failed to invite user");
+    res.status(400).send('Failed to invite user');
   }
 };
 export const exitRoom = async (req, res) => {
-  console.log("exit room");
+  console.log('exit room');
   const {
     body: { roomId, userId },
   } = req;
@@ -116,13 +116,13 @@ export const exitRoom = async (req, res) => {
         if (target) {
           target.send(
             JSON.stringify({
-              type: "changeRoomPeople",
+              type: 'changeRoomPeople',
               data: {
                 roomId: targetRoom._id,
                 userId: targetUser._id,
                 isOut: true,
               },
-            })
+            }),
           );
         }
       });
@@ -138,23 +138,23 @@ export const exitRoom = async (req, res) => {
         });
         await Room.findByIdAndRemove(targetRoom._id);
       }
-      res.send("succesfully exited Room");
+      res.send('succesfully exited Room');
     }
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send("Failed to exit Room");
+    res.status(400).send('Failed to exit Room');
   }
 };
 export const getRoomChat = async (req, res) => {
-  console.log("get Room Chat");
+  console.log('get Room Chat');
   try {
     const {
       query: { roomId, from, amount },
     } = req;
     const targetRoom = await Room.findOne({ _id: roomId }).populate({
-      path: "chatIdList",
+      path: 'chatIdList',
       populate: {
-        path: "speaker",
+        path: 'speaker',
       },
     });
     const { chatIdList } = targetRoom;
@@ -165,6 +165,6 @@ export const getRoomChat = async (req, res) => {
     res.send(slicedArr);
   } catch (error) {
     console.log(error.stack);
-    res.status(400).send("Failed to get Room Chat");
+    res.status(400).send('Failed to get Room Chat');
   }
 };
