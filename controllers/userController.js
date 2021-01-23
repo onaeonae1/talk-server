@@ -5,8 +5,8 @@ export const getUser = async (req, res) => {
   const userId = req.query.id;
   try {
     const user = await User.findOne({ _id: userId })
-      .populate('friendsList')
-      .populate('roomList');
+      .populate('roomList')
+      .populate('friendsList');
     if (!user) {
       throw Error('there is no user');
     }
