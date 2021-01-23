@@ -3,6 +3,7 @@ const API = '/api';
 const GET_USERS = '/getUsers';
 const GET_ROOMS = '/getRooms';
 const GET_CHATS = '/getChats';
+const USER_INFO = '/userinfo';
 
 const GET_USER = '/getUser';
 const ADD_FRIEND = '/addFriend';
@@ -28,20 +29,22 @@ const GET_ROOM = '/getRoom';
 const DUMMY = '/dummy';
 
 const routes = {
-	api: API,
-	getUsers: GET_USERS,
-	getRooms: GET_ROOMS,
-	getChats: GET_CHATS,
-	getUser: GET_USER,
-	addFriend: ADD_FRIEND,
-	removeFriend: REMOVE_FRIEND,
-	blockUser: BLOCK_USER,
-	login: LOGIN,
-	register: REGISTER,
-	testUser: TEST_USER,
-	testRoom: TEST_ROOM,
-	testChat: TEST_CHAT,
-	dummy: DUMMY,
+  api: API,
+  getUsers: GET_USERS,
+  getRooms: GET_ROOMS,
+  getChats: GET_CHATS,
+  getUser: GET_USER,
+  userInfo: USER_INFO,
+  addFriend: ADD_FRIEND,
+  removeFriend: REMOVE_FRIEND,
+  blockUser: BLOCK_USER,
+  login: LOGIN,
+  register: REGISTER,
+  testUser: TEST_USER,
+  testRoom: TEST_ROOM,
+  testChat: TEST_CHAT,
+  logout: LOGOUT,
+  dummy: DUMMY,
 
 	room: ROOM,
 	createRoom: CREATE_ROOM,
