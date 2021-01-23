@@ -112,3 +112,12 @@ export const dummyValid = async (req, res) => {
     res.send('test fail');
   }
 };
+export const dummyReq = async (req, res) => {
+  console.log('dummy req user test');
+  console.log(req.user);
+  if (req.user) {
+    res.send(req.user);
+  } else {
+    res.send('fail');
+  }
+};

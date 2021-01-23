@@ -38,6 +38,7 @@ const UserSchema = new mongoose.Schema({
   },
   quoteMessage: {
     type: String,
+    default: 'hello socket talk!',
   },
   friendsList: [
     {
@@ -66,6 +67,19 @@ UserSchema.methods.setPassword = async (password) => {
 UserSchema.methods.checkPassword = async function (password) {
   const result = await bcrypt.compare(password, this.hashedPassword);
   return result;
+};
+UserSchema.methods.getInfo = async function () {
+  // 다른 사용자가 조회할 수 있는 부분
+  const ret = {
+    userName: this.userName,
+    email: this.email,
+    avatarUrl: this.avatarUrl,
+    backgroundUrl: this.backgroundUrl,
+    birthDay: this.birthDay,
+    nickName: this.nickName,
+    quoteMessage: this.quoteMessage,
+  };
+  return ret;
 };
 UserSchema.statics.findByEmail = async function (email) {
   const result = await this.findOne({ email });

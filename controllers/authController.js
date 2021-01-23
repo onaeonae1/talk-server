@@ -32,6 +32,7 @@ export const login = async (req, res) => {
   const {
     body: { email, password },
   } = req;
+  console.log(req.body);
   try {
     const targetUser = await User.findOne({ email });
     if (!targetUser) {
@@ -46,7 +47,7 @@ export const login = async (req, res) => {
     jwt.sign(
       { _id: targetUser._id, email: targetUser.email },
       jwtSecret, {
-        expiresIn: '1d',
+        expiresIn: '60',
       }, (err, token) => {
         if (err) {
           throw Error('cannot make token');
