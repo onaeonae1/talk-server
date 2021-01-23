@@ -3,6 +3,7 @@ const API = '/api';
 const GET_USERS = '/getUsers';
 const GET_ROOMS = '/getRooms';
 const GET_CHATS = '/getChats';
+const USER_INFO = '/userinfo';
 
 const GET_USER = '/getUser';
 const ADD_FRIEND = '/addFriend';
@@ -32,6 +33,7 @@ const routes = {
   getRooms: GET_ROOMS,
   getChats: GET_CHATS,
   getUser: GET_USER,
+  userInfo: USER_INFO,
   addFriend: ADD_FRIEND,
   removeFriend: REMOVE_FRIEND,
   blockUser: BLOCK_USER,
@@ -40,6 +42,7 @@ const routes = {
   testUser: TEST_USER,
   testRoom: TEST_ROOM,
   testChat: TEST_CHAT,
+  logout: LOGOUT,
   dummy: DUMMY,
 
   room: ROOM,
