@@ -5,7 +5,7 @@ import { globalData } from '../globalData';
 
 export const createRoom = async (req, res) => {
 	console.log('Create Room');
-	let {
+	const {
 		body: { userList },
 	} = req;
 	const {
@@ -99,6 +99,7 @@ export const exitRoom = async (req, res) => {
 	const {
 		body: { roomId, userId },
 	} = req;
+	console.log(roomId, userId);
 	try {
 		const targetRoom = await Room.findOne({ _id: roomId });
 		const targetUser = await User.findOne({ _id: userId });
@@ -151,6 +152,7 @@ export const getRoomChat = async (req, res) => {
 		const {
 			query: { roomId, from, amount },
 		} = req;
+		console.log(roomId, from, amount);
 		const targetRoom = await Room.findOne({ _id: roomId }).populate({
 			path: 'chatIdList',
 			populate: {
@@ -166,5 +168,19 @@ export const getRoomChat = async (req, res) => {
 	} catch (error) {
 		console.log(error.stack);
 		res.status(400).send('Failed to get Room Chat');
+	}
+};
+
+export const getRoom = async (req, res) => {
+	console.log('getRoomInfo');
+	try {
+		const {
+			query: { roomId },
+		} = req;
+		const roomObj = await Room.findById(roomId);
+		res.send(roomObj);
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Failed to get Rooom Info');
 	}
 };

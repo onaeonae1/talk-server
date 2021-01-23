@@ -1,4 +1,3 @@
-import axios from 'axios';
 import mongoose from 'mongoose';
 import User from '../models/User';
 import Room from '../models/Room';
@@ -81,61 +80,6 @@ export const createDummychat = async (req, res) => {
       statuscode: 400,
       message: 'Internal Server Error',
     });
-  }
-};
-export const dummyPostUser = async (req, res) => {
-  console.log('dummy fetch test');
-  try {
-    await axios({
-      method: 'POST',
-      url: 'http://192.168.35.62:4000/dummy/user',
-      data: {
-        userName: 'oaneonae5',
-        email: 'onaeonae5@konkuk.ac.kr',
-        nickName: 'idiot',
-        quoteMessage: "i'm idiot",
-      },
-    });
-    console.log('post user finished');
-    res.redirect('/api/getUsers');
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const dummyPostRoom = async (req, res) => {
-  console.log('dummy fetch room');
-  try {
-    await axios({
-      method: 'POST',
-      url: 'http://192.168.35.62:4000/dummy/room',
-      data: {
-        roomName: 'nodejs를 혐오하는 사람의 모임',
-        creator: '5ff580df1feb980df879a8e7',
-        userList: ['5ff580df1feb980df879a8e7'],
-      },
-    });
-    console.log('post room finished');
-    res.redirect('/api/getRooms');
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const dummyPostChat = async (req, res) => {
-  console.log('dummy fetch chat');
-  try {
-    await axios({
-      method: 'POST',
-      url: 'http://192.168.35.62:4000/dummy/chat',
-      data: {
-        message: '테스트 대화 3!',
-        speaker: '5ff854bdd17cbf4f8ce728be',
-        joiningRoom: '5ff9ac9d5ada9316fc244d44',
-      },
-    });
-    console.log('post chat finished');
-    res.redirect('/api/getChats');
-  } catch (error) {
-    console.log(error);
   }
 };
 export const dummySearch = async (req, res) => {

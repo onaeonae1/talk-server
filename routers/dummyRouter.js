@@ -1,7 +1,11 @@
 // implemented to make test data. need to be removed
 import express from 'express';
 import {
-  createDummychat, createDummyroom, createDummyuser, dummySearch, dummyValid,
+  createDummychat,
+  createDummyroom,
+  createDummyuser,
+  dummySearch,
+  dummyValid,
 } from '../controllers/dummyController';
 
 const dummyRouter = express.Router();

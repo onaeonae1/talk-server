@@ -5,12 +5,7 @@ export const getUser = async (req, res) => {
 	const userId = req.query.id;
 	try {
 		const user = await User.findOne({ _id: userId })
-			.populate({
-				path: 'roomList',
-				populate: {
-					path: 'userList',
-				},
-			})
+			.populate('roomList')
 			.populate('friendsList');
 		if (!user) {
 			throw Error('there is no user');
@@ -105,10 +100,4 @@ export const changeProfile = async (req, res) => {
 		console.log(error.stack);
 		res.status(400).send('Failed to change Profile');
 	}
-};
-export const searchUser = async (req, res) => {
-	// 유저 중에서 검색
-};
-export const searchFriend = async (req, res) => {
-	// 친구 중에서 검색
 };
