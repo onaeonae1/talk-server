@@ -71,6 +71,7 @@ UserSchema.methods.checkPassword = async function (password) {
 UserSchema.methods.getInfo = async function () {
   // 다른 사용자가 조회할 수 있는 부분
   const ret = {
+    _id: this._id,
     userName: this.userName,
     email: this.email,
     avatarUrl: this.avatarUrl,

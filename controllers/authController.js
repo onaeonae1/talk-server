@@ -7,8 +7,9 @@ export const register = async (req, res) => {
   const {
     body: { userName, email, password },
   } = req;
+  console.log(req.body);
   try {
-    if (User.findByEmail(email)) {
+    if (await User.findByEmail(email)) {
       throw Error('already have same email');
     }
     let hashedPassword;
@@ -47,7 +48,7 @@ export const login = async (req, res) => {
     jwt.sign(
       { _id: targetUser._id, email: targetUser.email },
       jwtSecret, {
-        expiresIn: '60',
+        expiresIn: '1d',
       }, (err, token) => {
         if (err) {
           throw Error('cannot make token');

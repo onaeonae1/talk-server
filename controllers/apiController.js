@@ -39,7 +39,7 @@ export const getUserInfo = async (req, res) => {
   console.log(userId);
   try {
     const user = await User.findOne({ _id: userId });
-    const modified = user.getInfo();
+    const modified = await user.getInfo();
     res.send(modified);
   } catch (error) {
     console.log(error.stack);
