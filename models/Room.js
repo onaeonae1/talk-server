@@ -26,7 +26,7 @@ const RoomSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
-  recntChatTime: {
+  recentChatTime: {
     type: Date,
     default: Date.now(),
   },
