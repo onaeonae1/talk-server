@@ -47,9 +47,11 @@ export const login = async (req, res) => {
     const jwtSecret = configs.jwt_secret;
     jwt.sign(
       { _id: targetUser._id, email: targetUser.email },
-      jwtSecret, {
+      jwtSecret,
+      {
         expiresIn: '1d',
-      }, (err, token) => {
+      },
+      (err, token) => {
         if (err) {
           throw Error('cannot make token');
         }

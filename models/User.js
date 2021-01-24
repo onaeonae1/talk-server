@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
   },
   hashedPassword: {
     type: String,
-    required: 'hashed password is required',
+    // required: 'hashed password is required',
   },
   isConnecting: {
     type: Boolean,

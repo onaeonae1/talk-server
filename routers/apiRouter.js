@@ -8,6 +8,7 @@ import {
   addFriend,
   removeFriend,
   blockUser,
+  getUserEmail,
 
 } from '../controllers/userController';
 import routes from '../routes';
@@ -27,6 +28,7 @@ apiRouter.post(routes.register, register);
 
 // Implemented Functions : userController
 apiRouter.get(routes.getUser, getUser);
+apiRouter.get(routes.getUserEmail, getUserEmail);
 apiRouter.post(routes.addFriend, addFriend);
 apiRouter.post(routes.removeFriend, removeFriend);
 apiRouter.post(routes.blockUser, blockUser);

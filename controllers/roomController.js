@@ -79,7 +79,7 @@ export const invite = async (req, res) => {
             type: 'changeRoomPeople',
             data: {
               roomId: targetRoom._id,
-              userId: targetUser._id,
+              userId: target._id,
               isOut: false,
             },
           }),
