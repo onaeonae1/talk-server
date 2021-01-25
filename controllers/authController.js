@@ -1,29 +1,22 @@
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 import configs from '../configs';
 
 export const register = async (req, res) => {
   const {
-    body: { userName, email, password },
+    body: {
+      userName, email, password, passwordCheck,
+    },
   } = req;
-  console.log(req.body);
   try {
+    if (password !== passwordCheck) {
+      throw Error('wrong password. check for your password');
+    }
     if (await User.findByEmail(email)) {
       throw Error('already have same email');
     }
-    let hashedPassword;
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, async (error, hash) => {
-        hashedPassword = hash;
-        await User.create({
-          userName,
-          email,
-          hashedPassword,
-        });
-        res.send(`user created with Email : ${email}`);
-      });
-    });
+    await User.registerUser(userName, email, password);
+    res.send(`user created with Email : ${email}`);
   } catch (error) {
     console.log(error.stack);
     res.status(400).send('failed to register user');
@@ -35,31 +28,27 @@ export const login = async (req, res) => {
   } = req;
   console.log(req.body);
   try {
-    const targetUser = await User.findOne({ email });
+    const targetUser = await User.findByEmail(email);
     if (!targetUser) {
       throw Error('no user with such email');
     }
     const result = await targetUser.checkPassword(password);
     if (!result) {
-      throw Error('password wrong');
+      throw Error('wrong password');
     }
-    // const testObject = { _id: targetUser._id, email: targetUser.email };
     const jwtSecret = configs.jwt_secret;
-    jwt.sign(
-      { _id: targetUser._id, email: targetUser.email },
-      jwtSecret,
-      {
-        expiresIn: '1d',
-      },
-      (err, token) => {
-        if (err) {
-          throw Error('cannot make token');
-        }
-        res.send({ token });
-      },
-    );
+    const token = jwt.sign({ _id: targetUser._id, email: targetUser.email }, jwtSecret, { expiresIn: '7d' });
+    res.cookie('accessToken', token, {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
+    })
+      .send(`login success for ${email}`);
   } catch (error) {
     console.log(error.stack);
     res.status(400).send('failed to login');
   }
+};
+export const logout = async (req, res) => {
+  // delete jwt stored in client-side cookie
+  res.clearCookie('accessToken');
 };

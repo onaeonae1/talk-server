@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
   },
   hashedPassword: {
     type: String,
-    // required: 'hashed password is required',
+    required: 'hashed password is required',
   },
   isConnecting: {
     type: Boolean,
@@ -85,6 +85,18 @@ UserSchema.methods.getInfo = async function () {
 UserSchema.statics.findByEmail = async function (email) {
   const result = await this.findOne({ email });
   return result;
+};
+UserSchema.statics.registerUser = async function (userName, email, password) {
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(password, salt, async (error, hashedPassword) => {
+      await this.create({
+        userName,
+        email,
+        hashedPassword,
+      });
+      console.log('successfully registerd');
+    });
+  });
 };
 const model = mongoose.model('User', UserSchema);
 export default model;

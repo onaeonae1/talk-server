@@ -16,7 +16,7 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(helmet());
 
-// body-parser
+// body-parser, cookie-parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

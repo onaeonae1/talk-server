@@ -2,7 +2,7 @@ import express from 'express';
 import {
   getUsers, getRooms, getChats, getUserInfo,
 } from '../controllers/apiController';
-import { login, register } from '../controllers/authController';
+import { login, logout, register } from '../controllers/authController';
 import {
   getUser,
   addFriend,
@@ -24,7 +24,7 @@ apiRouter.get(routes.userInfo, getUserInfo);
 // Implemented Functions : authController
 apiRouter.post(routes.login, login);
 apiRouter.post(routes.register, register);
-// logout
+apiRouter.post(routes.logout, logout);
 
 // Implemented Functions : userController
 apiRouter.get(routes.getUser, getUser);
