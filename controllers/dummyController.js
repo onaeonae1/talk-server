@@ -33,9 +33,7 @@ export const createDummyroom = async (req, res) => {
   console.log(req.body);
   try {
     const {
-      body: {
-        roomName, creator,
-      },
+      body: { roomName, creator },
     } = req;
     const dummyRoom = await Room.create({
       roomName,
@@ -57,9 +55,7 @@ export const createDummychat = async (req, res) => {
   console.log(req.body);
   try {
     const {
-      body: {
-        message, speaker, joiningRoom,
-      },
+      body: { message, speaker, joiningRoom },
     } = req;
     const targetRoom = await Room.findOne({ _id: joiningRoom });
     if (!targetRoom) {

@@ -4,12 +4,22 @@ export const getUser = async (req, res) => {
   console.log('getUser');
   const userId = req.query.id;
   try {
-    const user = await User.findOne({ _id: userId })
-      .populate('roomList')
-      .populate('friendsList');
+    const user = await User.findOne({ _id: userId });
     if (!user) {
       throw Error('there is no user');
     }
+    res.send(user);
+  } catch (error) {
+    console.log(error.stack);
+    res.status(400).send('Failed to get User');
+  }
+};
+
+export const getUserEmail = async (req, res) => {
+  console.log('getUserEmail');
+  const userId = req.query.email;
+  try {
+    const user = await User.findOne({ email: userId });
     res.send(user);
   } catch (error) {
     console.log(error.stack);

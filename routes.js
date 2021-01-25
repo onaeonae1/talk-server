@@ -6,6 +6,7 @@ const GET_CHATS = '/getChats';
 const USER_INFO = '/userinfo';
 
 const GET_USER = '/getUser';
+const GET_USER_EMAIL = '/getUserEmail';
 const ADD_FRIEND = '/addFriend';
 const REMOVE_FRIEND = '/removeFriend';
 const BLOCK_USER = '/blockUser';
@@ -34,6 +35,7 @@ const routes = {
   getRooms: GET_ROOMS,
   getChats: GET_CHATS,
   getUser: GET_USER,
+  getUserEmail: GET_USER_EMAIL,
   userInfo: USER_INFO,
   addFriend: ADD_FRIEND,
   removeFriend: REMOVE_FRIEND,
@@ -46,12 +48,12 @@ const routes = {
   logout: LOGOUT,
   dummy: DUMMY,
 
-	room: ROOM,
-	createRoom: CREATE_ROOM,
-	inviteRoom: INVITE_ROOM,
-	exitRoom: EXIT_ROOM,
-	getRoomChat: GET_ROOM_CHAT,
-	getRoom: GET_ROOM,
+  room: ROOM,
+  createRoom: CREATE_ROOM,
+  inviteRoom: INVITE_ROOM,
+  exitRoom: EXIT_ROOM,
+  getRoomChat: GET_ROOM_CHAT,
+  getRoom: GET_ROOM,
 };
 
 export default routes;

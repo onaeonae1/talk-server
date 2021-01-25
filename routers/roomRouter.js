@@ -1,11 +1,11 @@
 import express from 'express';
 import routes from '../routes';
 import {
-	createRoom,
-	exitRoom,
-	getRoom,
-	getRoomChat,
-	invite,
+  createRoom,
+  exitRoom,
+  getRoom,
+  getRoomChat,
+  invite,
 } from '../controllers/roomController';
 
 const roomRouter = express.Router();
