@@ -62,9 +62,13 @@ const UserSchema = new mongoose.Schema({
   ],
 });
 // Schema Methods
-UserSchema.methods.setPassword = async (password) => {
-  const hash = await bcrypt.hash(password, 10);
-  this.hashedPassword = hash;
+UserSchema.methods.setPassword = async function (password) {
+  try {
+    this.hashedPassword = await bcrypt.hash(password, 10);
+    return true;
+  } catch (error) {
+    return error;
+  }
 };
 UserSchema.methods.checkPassword = async function (password) {
   const result = await bcrypt.compare(password, this.hashedPassword);
@@ -84,21 +88,34 @@ UserSchema.methods.getInfo = async function () {
   };
   return ret;
 };
+UserSchema.methods.addFriend = async function (friendId) {
+  if (this.friendsList.includes(friendId)) {
+    return false;
+  }
+  this.friendsList.push(friendId);
+  await this.save();
+  return true;
+};
 UserSchema.statics.findByEmail = async function (email) {
   const result = await this.findOne({ email });
   return result;
 };
 UserSchema.statics.registerUser = async function (userName, email, password) {
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(password, salt, async (error, hashedPassword) => {
-      await this.create({
-        userName,
-        email,
-        hashedPassword,
+  try {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, async (error, hashedPassword) => {
+        await this.create({
+          userName,
+          email,
+          hashedPassword,
+        });
+        console.log('successfully registerd');
       });
-      console.log('successfully registerd');
     });
-  });
+    return true;
+  } catch (error) {
+    return error;
+  }
 };
 const model = mongoose.model('User', UserSchema);
 export default model;

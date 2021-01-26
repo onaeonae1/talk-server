@@ -17,9 +17,13 @@ export const getUser = async (req, res) => {
 
 export const getUserEmail = async (req, res) => {
   console.log('getUserEmail');
-  const userId = req.query.email;
+  const {
+    query: {
+      email,
+    },
+  } = req;
   try {
-    const user = await User.findOne({ email: userId });
+    const user = await User.findByEmail(email);
     res.send(user);
   } catch (error) {
     console.log(error.stack);
@@ -31,15 +35,16 @@ export const addFriend = async (req, res) => {
   console.log('Add Friend');
   try {
     const {
-      body: { userId, friendId },
+      body: { friendId },
+      user: { _id },
     } = req;
-    const targetUser = await User.findOne({ _id: userId });
-    if (targetUser.friendsList.includes(friendId)) {
-      throw Error('they are already friend');
+
+    const result = await User.findOne({ _id }).addFriend(friendId);
+
+    if (result) {
+      res.status(200).send('successfully added friend');
     } else {
-      targetUser.friendsList.push(friendId);
-      await targetUser.save();
-      res.send('sucessfully added Friend');
+      throw Error('failed to add User');
     }
   } catch (error) {
     console.log(error.stack);
@@ -50,15 +55,16 @@ export const removeFriend = async (req, res) => {
   console.log('Removing Friend');
   try {
     const {
-      body: { userId, friendId },
+      body: { friendId },
+      user: { userId },
     } = req;
+    // schema method 로
     const targetUser = await User.findOne({ _id: userId });
     if (await User.findOne({ _id: friendId })) {
       console.log(`deleting friend : ${friendId}`);
       if (targetUser.friendsList.includes(friendId)) {
         targetUser.friendsList.remove(friendId);
         await targetUser.save();
-        res.redirect('/api/getUsers');
       } else {
         throw Error('they are not friend');
       }
@@ -74,7 +80,8 @@ export const blockUser = async (req, res) => {
   console.log('Block User');
   try {
     const {
-      body: { userId, blockId },
+      body: { blockId },
+      user: { userId },
     } = req;
     const targetUser = await User.findOne({ _id: userId });
     if (await User.findOne({ _id: blockId })) {
@@ -83,7 +90,6 @@ export const blockUser = async (req, res) => {
       } else {
         targetUser.blockList.push(blockId);
         await targetUser.save();
-        res.redirect('/api/getUsers');
       }
     } else {
       throw Error('there is no such user');
@@ -93,6 +99,7 @@ export const blockUser = async (req, res) => {
     res.status(400).send('Failed to block User');
   }
 };
+// need to change lot
 export const changeProfile = async (req, res) => {
   console.log('Change Profile');
   try {

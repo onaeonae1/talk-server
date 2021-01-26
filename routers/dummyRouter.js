@@ -19,4 +19,10 @@ dummyRouter.post('/room', createDummyroom);
 dummyRouter.post('/search', dummySearch);
 dummyRouter.post('/valid', dummyValid);
 dummyRouter.post('/req', isAuth, dummyReq);
+dummyRouter.get('/login', (req, res) => {
+  res.render('login');
+});
+dummyRouter.get('/register', (req, res) => {
+  res.render('register');
+});
 export default dummyRouter;
