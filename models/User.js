@@ -32,9 +32,11 @@ const UserSchema = new mongoose.Schema({
   },
   avatarUrl: {
     type: String,
+    default: 'https://upload.wikimedia.org/wikipedia/commons/c/c1/Lionel_Messi_20180626.jpg',
   },
   backgroundUrl: {
     type: String,
+    default: 'https://ww.namu.la/s/6b26c346f9a59f3c34413e566d89726771cc247b6126b6a7a8b1a13b2031b9e0ae8fcdc2c40e82337640484eadf59dffafaf1a5950505109d4002ff0ebf21415e47a18453d667d57444e16aa2335c13d5108a305ad33094a796ff066150b2555dffac4615f6b49065a929b507789a4f2',
   },
   quoteMessage: {
     type: String,
