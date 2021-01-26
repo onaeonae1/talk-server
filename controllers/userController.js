@@ -39,7 +39,7 @@ export const addFriend = async (req, res) => {
     } else {
       targetUser.friendsList.push(friendId);
       await targetUser.save();
-      res.redirect('/api/getUsers');
+      res.send('sucessfully added Friend');
     }
   } catch (error) {
     console.log(error.stack);
