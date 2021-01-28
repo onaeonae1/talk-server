@@ -1,0 +1,10 @@
+doctype html
+html
+    head
+    body
+        form(action='../api/register',method="post",required="true")
+            input(type="email",name="email",placeholder="Email", required="true")
+            input(type="userName", name="userName", placeholder="userName", required="true")
+            input(type="password",name="password", placeholder = "Password",required="true")
+            input(type="password",name="passwordCheck", placeholder="Password Check", required="true")
+            input(type="submit",value="Log In")

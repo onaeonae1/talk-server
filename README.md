@@ -5,15 +5,17 @@ Talk Client / Talk Server
 ## DONE
 - Register
 - Login
-- Authorization middleware
+- Authentication middleware via accessToken
+- Authorization middleware via role
 - Using Schema Static/Method 
  
-
 ## To Implement & To Do
-- Testing User
+- Force Secure Password
 - Refresh Token vs Sliding Session
-- Delete Test Functions
-- Deploy via Docker
+- Email Authenticate
+- Clear Test Functions
+- Clear Dummy Data
+- Deploy via Docker, EC2
 
 ## Things to Apply for Project
 - Clean Code

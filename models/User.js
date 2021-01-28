@@ -60,6 +60,10 @@ const UserSchema = new mongoose.Schema({
       ref: 'User',
     },
   ],
+  role: {
+    type: String,
+    default: 'vanilla',
+  },
 });
 // Schema Methods
 UserSchema.methods.setPassword = async function (password) {

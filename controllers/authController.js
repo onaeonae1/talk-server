@@ -39,7 +39,7 @@ export const login = async (req, res) => {
     const jwtSecret = configs.jwt_secret;
     const token = jwt.sign({ _id: targetUser._id, email: targetUser.email }, jwtSecret, { expiresIn: '7d' });
     res.cookie('accessToken', token, {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
       httpOnly: true,
     })
       .send(`login success for ${email}`);

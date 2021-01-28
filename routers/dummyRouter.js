@@ -8,7 +8,7 @@ import {
   dummySearch,
   dummyValid,
 } from '../controllers/dummyController';
-import { isAuth } from '../middlewares';
+import { isAuthenticated } from '../middlewares';
 
 const dummyRouter = express.Router();
 
@@ -18,7 +18,7 @@ dummyRouter.post('/chat', createDummychat);
 dummyRouter.post('/room', createDummyroom);
 dummyRouter.post('/search', dummySearch);
 dummyRouter.post('/valid', dummyValid);
-dummyRouter.post('/req', isAuth, dummyReq);
+dummyRouter.post('/req', isAuthenticated, dummyReq);
 dummyRouter.get('/login', (req, res) => {
   res.render('login');
 });
@@ -26,3 +26,14 @@ dummyRouter.get('/register', (req, res) => {
   res.render('register');
 });
 export default dummyRouter;
+dummyRouter.get('/cookie', (req, res) => {
+  const {
+    cookies: { accessToken },
+    headers: { cookie },
+  } = req;
+  // console.log(req);
+  console.log(req.headers);
+  console.log(cookie);
+  console.log(accessToken);
+  res.send('check console');
+});
