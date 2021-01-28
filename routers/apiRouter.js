@@ -19,8 +19,8 @@ const apiRouter = express.Router();
 
 // Total Data -> use for test. need to add Authorization middlewares
 apiRouter.get(routes.getUsers, isAuthenticated, isAuthorized, getUsers);
-apiRouter.get(routes.getRooms, getRooms);
-apiRouter.get(routes.getChats, getChats);
+apiRouter.get(routes.getRooms, isAuthenticated, isAuthorized, getRooms);
+apiRouter.get(routes.getChats, isAuthenticated, isAuthorized, getChats);
 apiRouter.get(routes.userInfo, getUserInfo);
 
 // Implemented Functions : authController
