@@ -14,7 +14,7 @@ export const isAuthenticated = async (req, res, next) => {
   const {
     cookies: { accessToken },
   } = req;
-  console.log('⏳ Authentiation in progress..');
+  console.log('⏳ Authentiation in progress..', accessToken);
   try {
     const jwtSecret = configs.jwt_secret;
     const { _id } = jwt.verify(accessToken, jwtSecret, {});

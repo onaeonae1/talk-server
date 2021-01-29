@@ -30,7 +30,7 @@ apiRouter.post(routes.register, register);
 apiRouter.post(routes.logout, isAuthenticated, logout);
 
 // Implemented Functions : userController
-apiRouter.get(routes.getUser, isAuthenticated, getUser);
+apiRouter.get(routes.getUser, getUser);
 apiRouter.get(routes.getUserEmail, isAuthenticated, getUserEmail);
 apiRouter.post(routes.addFriend, isAuthenticated, addFriend);
 apiRouter.post(routes.removeFriend, isAuthenticated, removeFriend);
