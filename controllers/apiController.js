@@ -2,6 +2,14 @@ import User from '../models/User';
 import Room from '../models/Room';
 import Chat from '../models/Chat';
 
+export const getHome = async (req, res) => {
+  const {
+    userName, _id,
+  } = req.user;
+  console.log(`you are logged in as : ${userName}`);
+  res.send({ _id });
+};
+
 export const getUsers = async (req, res) => {
   console.log('get Users');
   try {

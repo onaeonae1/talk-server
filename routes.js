@@ -4,6 +4,7 @@ const GET_USERS = '/getUsers';
 const GET_ROOMS = '/getRooms';
 const GET_CHATS = '/getChats';
 const USER_INFO = '/userinfo';
+const HOME = '/home';
 
 const GET_USER = '/getUser';
 const GET_USER_EMAIL = '/getUserEmail';
@@ -37,6 +38,7 @@ const routes = {
   getUser: GET_USER,
   getUserEmail: GET_USER_EMAIL,
   userInfo: USER_INFO,
+  home: HOME,
   addFriend: ADD_FRIEND,
   removeFriend: REMOVE_FRIEND,
   blockUser: BLOCK_USER,

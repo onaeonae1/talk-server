@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  getUsers, getRooms, getChats, getUserInfo,
+  getUsers, getRooms, getChats, getUserInfo, getHome,
 } from '../controllers/apiController';
 import { login, logout, register } from '../controllers/authController';
 import {
@@ -22,6 +22,7 @@ apiRouter.get(routes.getUsers, isAuthenticated, isAuthorized, getUsers);
 apiRouter.get(routes.getRooms, isAuthenticated, isAuthorized, getRooms);
 apiRouter.get(routes.getChats, isAuthenticated, isAuthorized, getChats);
 apiRouter.get(routes.userInfo, getUserInfo);
+apiRouter.get(routes.home, isAuthenticated, getHome);
 
 // Implemented Functions : authController
 apiRouter.post(routes.login, login);
