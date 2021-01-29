@@ -42,12 +42,13 @@ export const login = async (req, res) => {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
       httpOnly: true,
     })
-      .send(`login success for ${email}`);
+      .send(targetUser._id);
   } catch (error) {
     console.log(error.stack);
     res.status(400).send('failed to login');
   }
 };
+
 export const logout = async (req, res) => {
   // delete jwt stored in client-side cookie
   res.clearCookie('accessToken');

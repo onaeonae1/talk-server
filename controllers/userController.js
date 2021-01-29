@@ -3,8 +3,10 @@ import User from '../models/User';
 export const getUser = async (req, res) => {
   console.log('getUser');
   const userId = req.query.id;
+  console.log(userId);
   try {
     const user = await User.findOne({ _id: userId });
+    console.log(user);
     if (!user) {
       throw Error('there is no user');
     }

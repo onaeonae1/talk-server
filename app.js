@@ -12,7 +12,10 @@ import routes from './routes';
 const app = express();
 
 // cors
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true,
+}));
 app.use(morgan('dev'));
 app.use(helmet());
 
