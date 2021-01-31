@@ -2,12 +2,19 @@ import User from '../models/User';
 import Room from '../models/Room';
 import Chat from '../models/Chat';
 
-export const getHome = async (req, res) => {
-  const {
-    userName, _id,
-  } = req.user;
-  console.log(`you are logged in as : ${userName}`);
-  res.send({ _id });
+export const isLoggedin = async (req, res) => {
+  // 문제가 많은 코드. 테스트 하고 제거할 거 같음
+  if (!req.user) {
+    res.status(400).send('You are NOT logged in. try log in');
+  } else {
+    const {
+      userName, _id,
+    } = req.user;
+    res.send({
+      _id,
+      message: `you are logged in as :${userName}`,
+    });
+  }
 };
 
 export const getUsers = async (req, res) => {
