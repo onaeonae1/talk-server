@@ -7,8 +7,10 @@ import {
   dummyReq,
   dummySearch,
   dummyValid,
+  dummyAvatar,
 } from '../controllers/dummyController';
 import { isAuthenticated } from '../middlewares';
+import { uploadAvatar } from '../upload';
 
 const dummyRouter = express.Router();
 
@@ -37,3 +39,7 @@ dummyRouter.get('/cookie', (req, res) => {
   console.log(accessToken);
   res.send('check console');
 });
+dummyRouter.get('/upload', (req, res) => {
+  res.render('imgupload');
+});
+dummyRouter.post('/upload', uploadAvatar, dummyAvatar);

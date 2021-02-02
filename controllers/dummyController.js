@@ -117,3 +117,11 @@ export const dummyReq = async (req, res) => {
     res.send('fail');
   }
 };
+export const dummyAvatar = (req, res) => {
+  console.log('dummy avatar');
+  console.log(req);
+  const {
+    body: { avatar },
+  } = req;
+  console.log(avatar);
+};
