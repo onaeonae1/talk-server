@@ -3,6 +3,7 @@ const API = '/api';
 const GET_USERS = '/getUsers';
 const GET_ROOMS = '/getRooms';
 const GET_CHATS = '/getChats';
+// USER
 const USER_INFO = '/userinfo';
 const IS_LOGGED_IN = '/isLoggedin';
 
@@ -14,6 +15,8 @@ const BLOCK_USER = '/blockUser';
 const LOGIN = '/login';
 const LOGOUT = '/logout';
 const REGISTER = '/register';
+const CHANGE_PROFILEIMAGE = '/changeProfileImage';
+const CHANGE_BACKGROUND = '/changeBackground';
 
 const TEST_USER = '/testUser';
 const TEST_ROOM = '/testRoom';
@@ -48,6 +51,9 @@ const routes = {
   testRoom: TEST_ROOM,
   testChat: TEST_CHAT,
   logout: LOGOUT,
+  changeProfileImage: CHANGE_PROFILEIMAGE,
+  changeBackground: CHANGE_BACKGROUND,
+
   dummy: DUMMY,
 
   room: ROOM,

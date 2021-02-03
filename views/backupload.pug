@@ -1,0 +1,8 @@
+doctype html
+html
+    head
+    body
+        form(action='../api/changeBackground',method="post",required="true", enctype="multipart/form-data")
+            label(for="file") Image File
+            input(type="file", id="avatar", name="background", required=true, accept="image/*")
+            input(type="submit",value="Upload Image")

@@ -8,6 +8,7 @@ import {
   dummySearch,
   dummyValid,
   dummyAvatar,
+  getDummyProfie,
 } from '../controllers/dummyController';
 import { isAuthenticated } from '../middlewares';
 import { uploadAvatar } from '../upload';
@@ -27,7 +28,6 @@ dummyRouter.get('/login', (req, res) => {
 dummyRouter.get('/register', (req, res) => {
   res.render('register');
 });
-export default dummyRouter;
 dummyRouter.get('/cookie', (req, res) => {
   const {
     cookies: { accessToken },
@@ -36,10 +36,11 @@ dummyRouter.get('/cookie', (req, res) => {
   // console.log(req);
   console.log(req.headers);
   console.log(cookie);
-  console.log(accessToken);
   res.send('check console');
 });
 dummyRouter.get('/upload', (req, res) => {
   res.render('imgupload');
 });
 dummyRouter.post('/upload', uploadAvatar, dummyAvatar);
+export default dummyRouter;
+dummyRouter.get('/profile', isAuthenticated, getDummyProfie);

@@ -101,24 +101,30 @@ export const blockUser = async (req, res) => {
     res.status(400).send('Failed to block User');
   }
 };
-// need to change lot
-export const changeProfile = async (req, res) => {
-  console.log('Change Profile');
-  try {
-    const {
-      body: {
-        userId, avatarUrl, backgroundUrl, nickName, quoteMessage,
-      },
-    } = req;
-    const updateUser = await User.findByIdAndUpdate(userId, {
-      avatarUrl,
-      backgroundUrl,
-      nickName,
-      quoteMessage,
-    });
-    console.log(`Successfully Changed Profile : ${updateUser.nickName}`);
-  } catch (error) {
-    console.log(error.stack);
-    res.status(400).send('Failed to change Profile');
-  }
+// image file uploading functions : need to tested
+export const changeProfileImage = async (req, res) => {
+  console.log('change Profile Image');
+  const {
+    file: { location },
+    user: { _id },
+  } = req;
+  console.log(location);
+  await User.findOneAndUpdate({ _id }, { avatarUrl: location });
+  const targetUser = await User.findOne({ _id });
+  req.user = await targetUser.getInfo();
+  console.log(req.user);
+  res.send(req.user);
+};
+export const changeBackground = async (req, res) => {
+  console.log('change Background Image');
+  const {
+    file: { location },
+    user: { _id },
+  } = req;
+  console.log(location);
+  await User.findOneAndUpdate({ _id }, { backgroundUrl: location });
+  const targetUser = await User.findOne({ _id });
+  req.user = await targetUser.getInfo();
+  console.log(req.user);
+  res.send(req.user);
 };

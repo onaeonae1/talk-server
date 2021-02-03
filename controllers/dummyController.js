@@ -123,5 +123,11 @@ export const dummyAvatar = (req, res) => {
   const {
     body: { avatar },
   } = req;
-  console.log(avatar);
+};
+export const getDummyProfie = (req, res) => {
+  console.log('dummy Profile');
+  const {
+    user,
+  } = req;
+  res.render('profile', { user });
 };
