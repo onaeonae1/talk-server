@@ -11,41 +11,40 @@ export const localsMiddleware = (req, res, next) => { // 전역 변수로서 사
 };
 
 export const isAuthenticated = async (req, res, next) => {
-  const {
-    cookies: { accessToken },
-  } = req;
-  if (!accessToken) {
-    // 토큰이 주어지지 않은 경우
-    console.log('Token is Empty');
-    next();
-  } else {
-    console.log('⏳ Authentiation in progress..', accessToken);
-    try {
-      const jwtSecret = configs.jwt_secret;
-      const { _id } = jwt.verify(accessToken, jwtSecret, {});
-      const user = await User.findOne({ _id });
-      // 이러한 유저가 없는 경우
-      if (!user) {
-        throw Error('no user with such id');
-      }
-      req.user = await user.getInfo();
-      req.token = accessToken;
-      console.log(`🤗 Welcome ${user.userName}`);
-      next();
-    } catch (error) {
-      console.log(error.message);
-      res.status(400).send('Authentication failed. try again');
-      next(error);
+  try {
+    if (!req.cookies.accessToken) {
+      throw Error('token is empty. you need to login');
     }
+    const {
+      cookies: { accessToken },
+    } = req;
+    console.log('⏳ Authentiation in progress..');
+    const jwtSecret = configs.jwt_secret;
+    const { _id } = jwt.verify(accessToken, jwtSecret, {});
+    const user = await User.findOne({ _id });
+    // 이러한 유저가 없는 경우
+    if (!user) {
+      throw Error('no user with such id');
+    }
+    req.user = await user.getInfo();
+    req.token = accessToken;
+    console.log(`🤗 Welcome ${user.userName}`);
+    next();
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).send('Authentication failed. Try Again');
   }
 };
 
 export const isAuthorized = async (req, res, next) => {
-  const {
-    user: { _id },
-  } = req;
-  console.log('⏳ Authorization in progress..');
   try {
+    if (!req.user) {
+      throw Error('token is empty. authentication failed!');
+    }
+    const {
+      user: { _id },
+    } = req;
+    console.log('⏳ Authorization in progress..');
     const { role } = await User.findOne({ _id });
     if (role === 'Admin') {
       console.log('⚒  Welcome Our Admin!');

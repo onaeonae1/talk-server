@@ -25,5 +25,13 @@ const multerBackground = multer({
     bucket: 'sockettalk/userdata/backgrounds',
   }),
 });
+const multerChatImage = multer({
+  storage: ({
+    s3,
+    acl: 'public-read',
+    bucket: 'sockettalk/chatdata/images',
+  }),
+});
 export const uploadAvatar = multerAvatar.single('avatar');
 export const uploadBackground = multerBackground.single('background');
+export const uploadChatImage = multerChatImage.single('chatImage');

@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import csp from 'helmet-csp';
 import apiRouter from './routers/apiRouter';
 import dummyRouter from './routers/dummyRouter';
 import roomRouter from './routers/roomRouter';
@@ -10,14 +11,22 @@ import { localsMiddleware } from './middlewares';
 import routes from './routes';
 // app 기본 설정
 const app = express();
-
+app.use(helmet());
+app.use(
+  csp({
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+    },
+  }),
+);
 // cors
 app.use(cors({
   origin: true,
   credentials: true,
 }));
 app.use(morgan('dev'));
-app.use(helmet());
 
 // temporary server side rendering test
 app.set('view engine', 'pug');
