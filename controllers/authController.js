@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import isEmail from 'validator';
 import User from '../models/User';
 import configs from '../configs';
 
@@ -9,6 +10,9 @@ export const register = async (req, res) => {
     },
   } = req;
   try {
+    if (!isEmail(email)) {
+      throw Error('email is not valid');
+    }
     if (password !== passwordCheck) {
       throw Error('wrong password. check for your password');
     }
@@ -26,7 +30,6 @@ export const login = async (req, res) => {
   const {
     body: { email, password },
   } = req;
-  console.log(req.body);
   try {
     const targetUser = await User.findByEmail(email);
     if (!targetUser) {

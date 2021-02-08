@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import jwt from 'jsonwebtoken';
+import RateLimit from 'express-rate-limit';
 
 import User from './models/User';
 import configs from './configs';
@@ -18,7 +19,6 @@ export const isAuthenticated = async (req, res, next) => {
     const {
       cookies: { accessToken },
     } = req;
-    console.log('⏳ Authentiation in progress..');
     const jwtSecret = configs.jwt_secret;
     const { _id } = jwt.verify(accessToken, jwtSecret, {});
     const user = await User.findOne({ _id });
@@ -28,14 +28,28 @@ export const isAuthenticated = async (req, res, next) => {
     }
     req.user = await user.getInfo();
     req.token = accessToken;
-    console.log(`🤗 Welcome ${user.userName}`);
     next();
   } catch (error) {
     console.log(error.message);
     res.status(400).send('Authentication failed. Try Again');
   }
 };
-
+export const isVerified = async (req, res, next) => {
+  try {
+    const {
+      user: { _id },
+    } = req;
+    const targetUser = await User.findOne({ _id });
+    if (targetUser.verified) {
+      next();
+    } else {
+      throw Error('User is not Verfied. verify your email first');
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).send('Authorization failed. Access Denied');
+  }
+};
 export const isAuthorized = async (req, res, next) => {
   try {
     if (!req.user) {
@@ -44,16 +58,19 @@ export const isAuthorized = async (req, res, next) => {
     const {
       user: { _id },
     } = req;
-    console.log('⏳ Authorization in progress..');
     const { role } = await User.findOne({ _id });
     if (role === 'Admin') {
-      console.log('⚒  Welcome Our Admin!');
       next();
     } else {
       throw Error(`Access Denied : User Role is ${role}`);
     }
   } catch (error) {
-    console.log(error.statck);
     res.status(400).send('Authorization failed. Access Denied');
   }
 };
+//  사용량 제한 -> handler 는 디폴트 사용
+export const apiLimitter = new RateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  delayMs: 0,
+});

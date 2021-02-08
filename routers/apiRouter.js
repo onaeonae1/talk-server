@@ -13,12 +13,14 @@ import {
   changeBackground,
 
 } from '../controllers/userController';
-import { isAuthenticated, isAuthorized } from '../middlewares';
+import { isAuthenticated, isAuthorized, apiLimitter } from '../middlewares';
 import { uploadAvatar, uploadBackground } from '../upload';
 
 import routes from '../routes';
 
 const apiRouter = express.Router();
+// To Limit API Calls
+apiRouter.use(apiLimitter);
 
 // Total Data -> only for admin. authorization middleware added.
 apiRouter.get(routes.getUsers, isAuthenticated, isAuthorized, getUsers);

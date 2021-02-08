@@ -4,7 +4,6 @@ import Chat from '../models/Chat';
 import { globalData } from '../globalData';
 
 export const createRoom = async (req, res) => {
-  console.log('Create Room');
   const {
     body: { userList },
   } = req;
@@ -49,7 +48,6 @@ export const createRoom = async (req, res) => {
 };
 
 export const invite = async (req, res) => {
-  console.log('Invite User');
   try {
     const { body: roomId, hostId, guestId } = req;
     const targetRoom = await Room.findOne({ _id: roomId });
@@ -95,11 +93,9 @@ export const invite = async (req, res) => {
   }
 };
 export const exitRoom = async (req, res) => {
-  console.log('exit room');
   const {
     body: { roomId, userId },
   } = req;
-  console.log(roomId, userId);
   try {
     const targetRoom = await Room.findOne({ _id: roomId });
     const targetUser = await User.findOne({ _id: userId });
@@ -147,12 +143,10 @@ export const exitRoom = async (req, res) => {
   }
 };
 export const getRoomChat = async (req, res) => {
-  console.log('get Room Chat');
   try {
     const {
       query: { roomId, from, amount },
     } = req;
-    console.log(roomId, from, amount);
     const targetRoom = await Room.findOne({ _id: roomId }).populate({
       path: 'chatIdList',
       populate: {
@@ -172,7 +166,6 @@ export const getRoomChat = async (req, res) => {
 };
 
 export const getRoom = async (req, res) => {
-  console.log('getRoomInfo');
   try {
     const {
       query: { roomId },

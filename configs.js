@@ -11,6 +11,8 @@ const configs = {
   jwt_secret: process.env.JWT_SECRET,
   aws_access: process.env.AWS_ACCESS_KEY_ID,
   aws_secret: process.env.AWS_SECRET_ACCESS_KEY,
+  naver_mail_id: process.env.NAVER_MAIL_ID,
+  naver_mail_password: process.env.NAVER_MAIL_PASSWORD,
 };
 
 export default configs;

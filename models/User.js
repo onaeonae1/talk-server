@@ -42,6 +42,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: 'hello socket talk!',
   },
+  verified: { // 이메일 인증여부
+    type: Boolean,
+    default: false,
+  },
   friendsList: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -99,6 +103,10 @@ UserSchema.methods.addFriend = async function (friendId) {
   this.friendsList.push(friendId);
   await this.save();
   return true;
+};
+UserSchema.methods.activateUser = async function () {
+  // 이메일 인증 성공
+  this.verified = true;
 };
 UserSchema.statics.findByEmail = async function (email) {
   const result = await this.findOne({ email });

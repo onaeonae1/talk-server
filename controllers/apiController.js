@@ -18,7 +18,6 @@ export const isLoggedin = async (req, res) => {
 };
 
 export const getUsers = async (req, res) => {
-  console.log('get Users');
   try {
     const users = await User.find({}).sort({ _id: -1 });
     res.send(users);
@@ -28,7 +27,6 @@ export const getUsers = async (req, res) => {
   }
 };
 export const getRooms = async (req, res) => {
-  console.log('get rooms');
   try {
     const rooms = await Room.find({}).sort({ _id: -1 });
     res.send(rooms);
@@ -38,7 +36,6 @@ export const getRooms = async (req, res) => {
   }
 };
 export const getChats = async (req, res) => {
-  console.log('get chats');
   try {
     const chats = await Chat.find({}).sort({ _id: -1 });
     res.send(chats);
@@ -49,7 +46,6 @@ export const getChats = async (req, res) => {
 };
 
 export const getUserInfo = async (req, res) => {
-  console.log('get necessary data from user');
   const userId = req.query.id;
   console.log(userId);
   try {

@@ -1,12 +1,9 @@
 import User from '../models/User';
 
 export const getUser = async (req, res) => {
-  console.log('getUser');
   const userId = req.query.id;
-  console.log(userId);
   try {
     const user = await User.findOne({ _id: userId });
-    console.log(user);
     if (!user) {
       throw Error('there is no user');
     }
@@ -18,7 +15,6 @@ export const getUser = async (req, res) => {
 };
 
 export const getUserEmail = async (req, res) => {
-  console.log('getUserEmail');
   const {
     query: {
       email,
@@ -34,7 +30,6 @@ export const getUserEmail = async (req, res) => {
 };
 
 export const addFriend = async (req, res) => {
-  console.log('Add Friend');
   try {
     const {
       body: { friendId },
@@ -54,7 +49,6 @@ export const addFriend = async (req, res) => {
   }
 };
 export const removeFriend = async (req, res) => {
-  console.log('Removing Friend');
   try {
     const {
       body: { friendId },
@@ -63,7 +57,6 @@ export const removeFriend = async (req, res) => {
     // schema method 로
     const targetUser = await User.findOne({ _id: userId });
     if (await User.findOne({ _id: friendId })) {
-      console.log(`deleting friend : ${friendId}`);
       if (targetUser.friendsList.includes(friendId)) {
         targetUser.friendsList.remove(friendId);
         await targetUser.save();
@@ -79,7 +72,6 @@ export const removeFriend = async (req, res) => {
   }
 };
 export const blockUser = async (req, res) => {
-  console.log('Block User');
   try {
     const {
       body: { blockId },
@@ -103,28 +95,32 @@ export const blockUser = async (req, res) => {
 };
 // image file uploading functions : need to tested
 export const changeProfileImage = async (req, res) => {
-  console.log('change Profile Image');
-  const {
-    file: { location },
-    user: { _id },
-  } = req;
-  console.log(location);
-  await User.findOneAndUpdate({ _id }, { avatarUrl: location });
-  const targetUser = await User.findOne({ _id });
-  req.user = await targetUser.getInfo();
-  console.log(req.user);
-  res.send(req.user);
+  try {
+    const {
+      file: { location },
+      user: { _id },
+    } = req;
+    await User.findOneAndUpdate({ _id }, { avatarUrl: location });
+    const targetUser = await User.findOne({ _id });
+    req.user = await targetUser.getInfo();
+    res.send(req.user);
+  } catch (error) {
+    console.log(error.stack);
+    res.status(400).send('failed to change Profile Image');
+  }
 };
 export const changeBackground = async (req, res) => {
-  console.log('change Background Image');
-  const {
-    file: { location },
-    user: { _id },
-  } = req;
-  console.log(location);
-  await User.findOneAndUpdate({ _id }, { backgroundUrl: location });
-  const targetUser = await User.findOne({ _id });
-  req.user = await targetUser.getInfo();
-  console.log(req.user);
-  res.send(req.user);
+  try {
+    const {
+      file: { location },
+      user: { _id },
+    } = req;
+    await User.findOneAndUpdate({ _id }, { backgroundUrl: location });
+    const targetUser = await User.findOne({ _id });
+    req.user = await targetUser.getInfo();
+    res.send(req.user);
+  } catch (error) {
+    console.log(error.stack);
+    res.status(400).send('failed to change background image');
+  }
 };
