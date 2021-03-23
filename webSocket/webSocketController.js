@@ -5,15 +5,6 @@ import User from '../models/User';
 
 export const authenticate = (data, client) => {
   const { userId } = data;
-  // const verifiedUserId = globalData.verifiedLogin[authKey];
-  // if (verifiedUserId) {
-  //   globalData.connectingUser[verifiedUserId] = client;
-  //   globalData.verifiedLogin[authKey] = undefined;
-  // } else {
-  //   globalData.verifiedLogin[data.authKey] = undefined;
-  // }
-  // 로그인 기능이 완성되면 적용
-
   const temp = globalData.verifiedLogin.get(String(userId));
   if (temp) {
     temp.send(JSON.stringify({ type: 'block', data: {} }));

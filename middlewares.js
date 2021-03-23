@@ -71,6 +71,6 @@ export const isAuthorized = async (req, res, next) => {
 //  사용량 제한 -> handler 는 디폴트 사용
 export const apiLimitter = new RateLimit({
   windowMs: 60 * 1000,
-  max: 5,
+  max: 50,
   delayMs: 0,
 });
